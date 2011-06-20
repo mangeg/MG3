@@ -5,3 +5,6 @@
 *.suo
 *.opensdf
 /Applications/Bin
+*.user
+/Applications/BasicApplication/Bin
+/SDK/Library
