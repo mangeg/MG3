@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{F7E11336-2143-48D0-8C42-DF5F77945E04}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicApplication", "Applications\BasicApplication\BasicApplication.vcxproj", "{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0362ABB-A865-4252-9148-15C8526B50DD} = {B0362ABB-A865-4252-9148-15C8526B50DD}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MG3", "Source\MG3.vcxproj", "{B0362ABB-A865-4252-9148-15C8526B50DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70}.Debug|Win32.Build.0 = Debug|Win32
+		{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70}.Release|Win32.ActiveCfg = Release|Win32
+		{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70}.Release|Win32.Build.0 = Release|Win32
+		{B0362ABB-A865-4252-9148-15C8526B50DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B0362ABB-A865-4252-9148-15C8526B50DD}.Debug|Win32.Build.0 = Debug|Win32
+		{B0362ABB-A865-4252-9148-15C8526B50DD}.Release|Win32.ActiveCfg = Release|Win32
+		{B0362ABB-A865-4252-9148-15C8526B50DD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCCA8217-59D8-4BA9-B1BF-8A6D6F9DDF70} = {F7E11336-2143-48D0-8C42-DF5F77945E04}
+	EndGlobalSection
+EndGlobal
