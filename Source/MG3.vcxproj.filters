@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -22,9 +14,9 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{26b1d944-1628-4736-9ff6-f057aeaef509}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Filter Include="Eventhandling">
+      <UniqueIdentifier>{4f95f2c7-3a4b-4ac7-ad48-dd34ff23deef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -45,6 +37,9 @@
     <ClCompile Include="Utility\StringTools.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Events\EventManager.cpp">
+      <Filter>Eventhandling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
@@ -64,6 +59,15 @@
     </ClInclude>
     <ClInclude Include="Utility\StringTools.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EventManager.h">
+      <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\IEventHandler.h">
+      <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\IEvent.h">
+      <Filter>Eventhandling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

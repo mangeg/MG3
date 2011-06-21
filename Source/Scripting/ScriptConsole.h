@@ -8,7 +8,7 @@ namespace MG3
 	{
 	public:
 		static LRESULT WINAPI MsgProc(HWND hWnd, unsigned uMsg, WPARAM wParam, LPARAM lParam);
-		static LRESULT CALLBACK InputEditProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK SubclassInputEditProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 		
 		static HWND ShowConsole(HINSTANCE hInstance);
 		static void HideConsole();
@@ -29,7 +29,6 @@ namespace MG3
 		static volatile bool m_bIsActive;
 		static volatile HWND m_hWnd;
 		static volatile HWND m_hEditControl;
-		static char m_CommandBuffer[4096];
 		static wchar_t m_CommandBufferW[4096];
 
 		std::list<std::string> m_stringList;

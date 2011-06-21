@@ -4,9 +4,9 @@
 
 using namespace MG3;
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow)
+//------------------------------------------------------------------------|
+int WINAPI WinMain(HINSTANCE hInstance, 
+	HINSTANCE, LPSTR lpCmdLine, int nCmdShow)
 {
 	Application* pApp = Application::GetApplication();
 	if(!pApp)
@@ -14,9 +14,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 		return -1;
 	}
 
+	if(!pApp->SetupComponents())
+	{
+		return -1;
+	}
+
 	if(!pApp->Initialize())
 	{
-		return -2;
+		pApp->UnloadComponents();
+		return -1;
 	}
 
 	ScriptConsole::ShowConsole(hInstance);
@@ -41,25 +47,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	}
 
 	pApp->Exit();
+	pApp->UnloadComponents();
 
 	return 1;
 }
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+//------------------------------------------------------------------------|
+LRESULT CALLBACK WindowProc(HWND hWnd, 
+	UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch(message)
 	{
 	case WM_CREATE: 
 		{
 			return( 0 );
-		} break;
-
-	case WM_PAINT:
-		{
-		} break;
-
-	case WM_CLOSE:
-		{
 		} break;
 	case WM_DESTROY:
 		{

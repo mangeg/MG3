@@ -102,6 +102,8 @@ void ScriptConsole::Paint(HDC hDC)
 	while(it != m_stringList.end())
 	{
 		TextOut(hDC, x, y, StringTools::ToUnicode(std::string(*it)).c_str(), strlen((*it).c_str()));
+		y -= 16;
+		++it;
 	}
 }
 
@@ -203,13 +205,7 @@ LRESULT WINAPI ScriptConsole::MsgProc(HWND hWnd, unsigned uMsg, WPARAM wParam, L
 			break;
 
 		} 
-		{
-			SCROLLINFO si;
-			si.cbSize = sizeof(si); 
-			si.fMask  = SIF_POS; 
-			si.nPos   = gScriptConsole->m_stringList.size() - gScriptConsole->m_iScrollPos; 
-			SetScrollInfo(hWnd, SB_VERT, &si, TRUE); 
-		}
+
 		InvalidateRect(m_hWnd, NULL, TRUE);
 
 		break;
@@ -260,23 +256,32 @@ void ScriptConsole::Write(const char *pString)
 	gScriptConsole->AdjustScrollBar();
 }
 
-LRESULT CALLBACK ScriptConsole::InputEditProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ScriptConsole::SubclassInputEditProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch(message)
-	{
-	case WM_CHAR:
-		if((TCHAR)wParam == VK_RETURN)
-		{
-			long lSizeOfString = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0);
+	switch( message )     
+	{         
+	case WM_CHAR:              
+		if ( (TCHAR)wParam == VK_RETURN ) // Found a RETURN keystroke!             
+		{ 
+			// get the command string
+			long lSizeofString;
 
-			SendMessage(hWnd, WM_GETTEXT, lSizeOfString + 1, (LPARAM)m_CommandBufferW);
-			SendMessage(m_hWnd, WM_USER, 0, lSizeOfString);
-			SendMessage(hWnd, WM_SETTEXT, 0, (long)"");
+			// Get the size of the string
+			lSizeofString = SendMessage( hWnd, WM_GETTEXTLENGTH, 0, 0 );
+
+			// Get the string                 
+			SendMessage( hWnd, WM_GETTEXT, lSizeofString + 1, (LPARAM) m_CommandBufferW ); 
+
+			// send message to parent that command was entered
+			SendMessage( m_hWnd, WM_USER, 0, lSizeofString );
+
+			// clear the edit string
+			SendMessage( hWnd, WM_SETTEXT, 0, (long) "" ); 
 			return 1;
 		}
 	}
 
-	return CallWindowProc(lpfnInputEdit, hWnd, message, wParam, lParam);
+	return CallWindowProc( lpfnInputEdit, hWnd, message, wParam, lParam ); 
 }
 
 void ScriptConsole::Initialize(HINSTANCE hInstance)
@@ -284,16 +289,16 @@ void ScriptConsole::Initialize(HINSTANCE hInstance)
 	m_hInstance = hInstance;
 	m_iScrollPos = 0;
 
+	// create application handler and link to our WindowProc
 	WNDCLASS wc;
-	ZeroMemory(&wc, sizeof(WNDCLASS));
 
-	// Set up and register window class	
+	// Set up and register window class
 	wc.style = 0;
 	wc.lpfnWndProc = (WNDPROC) MsgProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = sizeof(DWORD);
 	wc.hInstance = m_hInstance;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIcon = NULL;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName = NULL;
@@ -301,8 +306,7 @@ void ScriptConsole::Initialize(HINSTANCE hInstance)
 
 	RegisterClass( &wc );
 
-	m_hWnd = CreateWindow( 
-		L"ConsoleWindow",		// class
+	m_hWnd = CreateWindow( L"ConsoleWindow",	// class
 		L"LUA WinConsole",		// caption
 		WS_OVERLAPPEDWINDOW,	// style 
 		700,					// left
@@ -311,22 +315,20 @@ void ScriptConsole::Initialize(HINSTANCE hInstance)
 		240,					// height
 		NULL,					// parent window
 		NULL,					// menu 
-		hInstance,				// instance
+		m_hInstance,			// instance
 		NULL );					// parms
 
 	ShowWindow( m_hWnd, SW_SHOW );
 	UpdateWindow( m_hWnd );
 	SetFocus( m_hWnd );
 
-	
-	m_hEditControl = CreateWindow( 
-		L"EDIT",			// class
-		L"",				// caption
+	m_hEditControl = CreateWindow( L"EDIT",	// class
+		L"",					// caption
 		ES_LEFT | WS_CHILD, // style 
-		2,					// left
-		404,				// top
-		228,				// width
-		16,					// height
+		0,					// left
+		0,				// top
+		0,				// width
+		0,					// height
 		m_hWnd,				// parent window
 		(HMENU)0xa7,		// menu 
 		m_hInstance,		// instance
@@ -336,6 +338,6 @@ void ScriptConsole::Initialize(HINSTANCE hInstance)
 	UpdateWindow( m_hEditControl );
 	SetFocus( m_hEditControl );
 
-	lpfnInputEdit = (WNDPROC)SetWindowLong( m_hEditControl, GWL_WNDPROC, (long) InputEditProc ); 
+	lpfnInputEdit = (WNDPROC)SetWindowLong( m_hEditControl, GWL_WNDPROC, (long) SubclassInputEditProc ); 
 	gScriptConsole->ResizeControls();
 }
