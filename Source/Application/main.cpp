@@ -1,9 +1,9 @@
+//------------------------------------------------------------------------|
 #include "MG3.h"
 #include "Application.h"
-#include "ScriptConsole.h"
-
+#include "EvtKeyboardChar.h"
+//------------------------------------------------------------------------|
 using namespace MG3;
-
 //------------------------------------------------------------------------|
 int WINAPI WinMain(HINSTANCE hInstance, 
 	HINSTANCE, LPSTR lpCmdLine, int nCmdShow)
@@ -14,6 +14,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		return -1;
 	}
 
+	pApp->SetInstance(hInstance);
+
 	if(!pApp->SetupComponents())
 	{
 		return -1;
@@ -23,9 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	{
 		pApp->UnloadComponents();
 		return -1;
-	}
-
-	ScriptConsole::ShowConsole(hInstance);
+	}	
 
 	MSG msg;
 	bool loop = true;
@@ -67,6 +67,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 			PostQuitMessage(0);
 			return 0;
 		} break;
+	case WM_CHAR:
+		{
+			EventManager::Get()->Fire(new EvtKeyboardChar(hWnd, wParam, lParam));
+		}
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);

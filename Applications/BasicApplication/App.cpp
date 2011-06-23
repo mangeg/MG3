@@ -1,7 +1,10 @@
+//------------------------------------------------------------------------|
 #include "App.h"
-
+#include "ScriptConsole.h"
+#include "EvtKeyboardChar.h"
+//------------------------------------------------------------------------|
 BasicApplication App;
-
+//------------------------------------------------------------------------|
 BasicApplication::BasicApplication()
 {
 }
@@ -17,7 +20,9 @@ bool BasicApplication::Initialize()
 	m_pWindow->SetTitle(std::wstring(L"MG3 Basic Application"));
 	m_pWindow->Initialize();
 
-	EventManager::Get()->RegisterEvent(KEYBOARD_KEYDOWN, this);
+	ScriptConsole::Init(m_hInstance);
+
+	EventManager::Get()->RegisterEvent(KEYBOARD_CHAR, this);
 
 	return true;
 }
@@ -40,8 +45,22 @@ bool BasicApplication::HandleEvent(IEvent* pEvent)
 
 	switch (e)
 	{
-	case KEYBOARD_KEYDOWN:
-		return true;
+	case KEYBOARD_CHAR:
+		{
+			EvtKeyboardChar* pChar = (EvtKeyboardChar*)pEvent;
+			UINT key = pChar->GetCharacterCode();
+
+			switch(key)
+			{
+			case 's':
+				{
+					ScriptConsole::Toggle();
+					break;
+				}
+			}
+
+			return true;
+		}
 	}
 
 	return false;

@@ -10,8 +10,10 @@ namespace MG3
 		static LRESULT WINAPI MsgProc(HWND hWnd, unsigned uMsg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK SubclassInputEditProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 		
-		static HWND ShowConsole(HINSTANCE hInstance);
+		static void Init(HINSTANCE hInstance);
+		static HWND ShowConsole();
 		static void HideConsole();
+		static void Toggle();
 		static void Write(const char *pString);
 		static HWND GetHandle();
 
@@ -27,13 +29,14 @@ namespace MG3
 		void Paint(HDC hDC);
 
 		static volatile bool m_bIsActive;
+		static volatile bool m_bIsShown;
 		static volatile HWND m_hWnd;
 		static volatile HWND m_hEditControl;
 		static wchar_t m_CommandBufferW[4096];
 
 		std::list<std::string> m_stringList;
 
-		HINSTANCE m_hInstance;
+		static HINSTANCE m_hInstance;
 
 		int m_iScrollPos;
 		int m_iTextAreaHeight;

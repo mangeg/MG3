@@ -1,27 +1,18 @@
 //------------------------------------------------------------------------|
 #pragma once
-
 //------------------------------------------------------------------------|
-#include <string>
-
+#include "MG3.h"
+#include "EvtKeyboardMsg.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	enum eEVENT
-	{
-		KEYBOARD_KEYDOWN,
-		KEYBOARD_KEYUP,
-		KEYBOARD_CHAR,
-		NUM_EVENTS,
-	};
-
-	class IEvent
+	class EvtKeyboardChar : public EvtKeyboardMsg
 	{
 	public:
-		IEvent() {};
-		virtual ~IEvent() {};
+		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
+		~EvtKeyboardChar();
 
-		virtual std::wstring GetName() = 0;
-		virtual eEVENT GetEventType() = 0;
+		virtual std::wstring GetName();
+		virtual eEVENT GetEventType();
 	};
 }

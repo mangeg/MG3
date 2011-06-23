@@ -5,7 +5,9 @@ using namespace MG3;
 
 ScriptConsole* MG3::gScriptConsole = NULL;
 
+volatile bool ScriptConsole::m_bIsShown = false;
 volatile bool ScriptConsole::m_bIsActive = true;
+HINSTANCE ScriptConsole::m_hInstance = NULL;
 volatile HWND ScriptConsole::m_hWnd = NULL;
 volatile HWND ScriptConsole::m_hEditControl = NULL;
 
@@ -13,8 +15,14 @@ wchar_t ScriptConsole::m_CommandBufferW[4096];
 
 WNDPROC lpfnInputEdit;
 
-HWND ScriptConsole::ShowConsole(HINSTANCE hInstance)
+void ScriptConsole::Init(HINSTANCE hInstance)
+{	
+	m_hInstance = hInstance;	
+}
+
+HWND ScriptConsole::ShowConsole()
 {
+
 	if(!gScriptConsole)
 	{
 		gScriptConsole = new ScriptConsole();
@@ -22,8 +30,10 @@ HWND ScriptConsole::ShowConsole(HINSTANCE hInstance)
 
 	if(!m_hWnd)
 	{
-		gScriptConsole->Initialize(hInstance);
+		gScriptConsole->Initialize(m_hInstance);
 	}
+
+	m_bIsShown = true;
 
 	return m_hWnd;
 }
@@ -33,7 +43,17 @@ void ScriptConsole::HideConsole()
 	if(gScriptConsole)
 	{
 		SAFE_DELETE(gScriptConsole);
-	}
+	}	
+
+	m_bIsShown = false;
+}
+
+void ScriptConsole::Toggle()
+{
+	if(m_bIsShown)
+		HideConsole();
+	else
+		ShowConsole();
 }
 
 ScriptConsole::ScriptConsole()
@@ -124,6 +144,7 @@ LRESULT WINAPI ScriptConsole::MsgProc(HWND hWnd, unsigned uMsg, WPARAM wParam, L
 		return 0L;
 
 	case WM_DESTROY:
+		m_bIsShown = false;
 		m_bIsActive = false;
 		m_hWnd = NULL;
 		break;

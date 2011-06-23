@@ -47,6 +47,17 @@ bool EventManager::Fire(IEvent* pEvent)
 	if(!pEvent)
 		return false;
 
+	eEVENT e = pEvent->GetEventType();
+	bool handled = false;
+
+	std::list<IEventHandler*>::iterator it = m_EventHandlers[e].begin();
+	for( ; it != m_EventHandlers[e].end(); it++)
+	{
+		bool h = (*it)->HandleEvent(pEvent);
+		if(h)
+			handled = true;
+	}
+
 	delete pEvent;
 	return true;
 }

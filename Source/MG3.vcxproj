@@ -97,6 +97,9 @@ copy Events\*.h ..\SDK\Include\</Command>
     <ClCompile Include="Application\W32Window.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="Events\EventManager.cpp" />
+    <ClCompile Include="Events\EvtKeyboardChar.cpp" />
+    <ClCompile Include="Events\EvtKeyboardMsg.cpp" />
+    <ClCompile Include="Events\EvtWindowMsg.cpp" />
     <ClCompile Include="Scripting\ScriptConsole.cpp" />
     <ClCompile Include="Utility\StringTools.cpp" />
   </ItemGroup>
@@ -105,8 +108,11 @@ copy Events\*.h ..\SDK\Include\</Command>
     <ClInclude Include="Application\W32Window.h" />
     <ClInclude Include="Application\Window.h" />
     <ClInclude Include="Events\EventManager.h" />
+    <ClInclude Include="Events\EvtKeyboardChar.h" />
+    <ClInclude Include="Events\EvtKeyboardMsg.h" />
     <ClInclude Include="Events\IEvent.h" />
     <ClInclude Include="Events\IEventHandler.h" />
+    <ClInclude Include="Events\EvtWindowsMsg.h" />
     <ClInclude Include="Scripting\ScriptConsole.h" />
     <ClInclude Include="Utility\MG3.h" />
     <ClInclude Include="Utility\StringTools.h" />

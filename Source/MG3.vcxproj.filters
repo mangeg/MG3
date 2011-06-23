@@ -17,6 +17,12 @@
     <Filter Include="Eventhandling">
       <UniqueIdentifier>{4f95f2c7-3a4b-4ac7-ad48-dd34ff23deef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Eventhandling\WindowsEvents">
+      <UniqueIdentifier>{65f3aca9-66b2-44d6-88ff-74bc65e1c39e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Eventhandling\WindowsEvents\Keyboard">
+      <UniqueIdentifier>{3c68d9b8-d2fe-49ee-997c-d4e72df4afb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -39,6 +45,15 @@
     </ClCompile>
     <ClCompile Include="Events\EventManager.cpp">
       <Filter>Eventhandling</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\EvtWindowMsg.cpp">
+      <Filter>Eventhandling\WindowsEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\EvtKeyboardMsg.cpp">
+      <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\EvtKeyboardChar.cpp">
+      <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +83,15 @@
     </ClInclude>
     <ClInclude Include="Events\IEvent.h">
       <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EvtKeyboardMsg.h">
+      <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EvtWindowsMsg.h">
+      <Filter>Eventhandling\WindowsEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EvtKeyboardChar.h">
+      <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,10 +25,15 @@ namespace MG3
 		virtual void UnloadComponents() = 0;
 
 		void DoExit();
+		HINSTANCE GetInstance(){return m_hInstance;}
+
+		void SetInstance(HINSTANCE hInstance) {m_hInstance = hInstance;}
 
 		EventManager* m_pEventManager;
 
 	protected:
 		static Application* ms_pAppliction;
+
+		HINSTANCE m_hInstance;
 	};
 }

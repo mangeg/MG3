@@ -1,34 +1,30 @@
-
-#include "MG3.h"
-#include "Application.h"
-
+//------------------------------------------------------------------------|
+#include "EvtWindowsMsg.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
-
 //------------------------------------------------------------------------|
-Application* Application::ms_pAppliction = NULL;
-
-//------------------------------------------------------------------------|
-Application::Application()
+EvtWindowsMsg::EvtWindowsMsg(HWND hWnd, UINT wParam, UINT lParam)
 {
-	ms_pAppliction = this;
-
-	m_pEventManager = new EventManager();
+	m_hWnd = hWnd;
+	m_iWParam = wParam;
+	m_iLParam = lParam;
 }
-
 //------------------------------------------------------------------------|
-Application::~Application()
-{	
-}
-
-//------------------------------------------------------------------------|
-Application* Application::GetApplication()
+EvtWindowsMsg::~EvtWindowsMsg()
 {
-	return ms_pAppliction;
 }
-
 //------------------------------------------------------------------------|
-void Application::DoExit()
+HWND EvtWindowsMsg::GetWindowHandle()
 {
-	PostQuitMessage(0);
+	return m_hWnd;
+}
+//------------------------------------------------------------------------|
+UINT EvtWindowsMsg::GetWParam()
+{
+	return m_iWParam;
+}
+//------------------------------------------------------------------------|
+UINT EvtWindowsMsg::GetLParam()
+{
+	return m_iLParam;
 }

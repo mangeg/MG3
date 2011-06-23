@@ -1,34 +1,23 @@
-
-#include "MG3.h"
-#include "Application.h"
-
+//------------------------------------------------------------------------|
+#include "EvtKeyboardChar.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
-
 //------------------------------------------------------------------------|
-Application* Application::ms_pAppliction = NULL;
-
-//------------------------------------------------------------------------|
-Application::Application()
+EvtKeyboardChar::EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam)
+	: EvtKeyboardMsg(hWnd, wParam, lParam)
 {
-	ms_pAppliction = this;
-
-	m_pEventManager = new EventManager();
 }
-
 //------------------------------------------------------------------------|
-Application::~Application()
-{	
-}
-
-//------------------------------------------------------------------------|
-Application* Application::GetApplication()
+EvtKeyboardChar::~EvtKeyboardChar()
 {
-	return ms_pAppliction;
 }
-
 //------------------------------------------------------------------------|
-void Application::DoExit()
+std::wstring EvtKeyboardChar::GetName()
 {
-	PostQuitMessage(0);
+	return std::wstring(L"EvtKeyboard::Char");
+}
+//------------------------------------------------------------------------|
+eEVENT EvtKeyboardChar::GetEventType()
+{
+	return KEYBOARD_CHAR;
 }
