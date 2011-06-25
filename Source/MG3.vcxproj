@@ -62,6 +62,7 @@
     </Link>
     <PreBuildEvent>
       <Command>copy Utility\*.h ..\SDK\Include\
+copy Utility\*.inl ..\SDK\Include\
 copy Application\*.h ..\SDK\Include\
 copy Scripting\*.h ..\SDK\Include\
 copy Events\*.h ..\SDK\Include\</Command>
@@ -86,6 +87,7 @@ copy Events\*.h ..\SDK\Include\</Command>
     </Link>
     <PreBuildEvent>
       <Command>copy Utility\*.h ..\SDK\Include\
+copy Utility\*.inl ..\SDK\Include\
 copy Application\*.h ..\SDK\Include\
 copy Scripting\*.h ..\SDK\Include\
 copy Events\*.h ..\SDK\Include\</Command>
@@ -116,6 +118,10 @@ copy Events\*.h ..\SDK\Include\</Command>
     <ClInclude Include="Scripting\ScriptConsole.h" />
     <ClInclude Include="Utility\MG3.h" />
     <ClInclude Include="Utility\StringTools.h" />
+    <ClInclude Include="Utility\TArray.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Utility\TArray.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

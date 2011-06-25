@@ -73,16 +73,19 @@ ScriptConsole::~ScriptConsole()
 
 void ScriptConsole::AdjustScrollBar()
 {
-	SCROLLINFO si;
-	ZeroMemory(&si, sizeof(SCROLLINFO));
+	if(gScriptConsole && m_hWnd)
+	{
+		SCROLLINFO si;
+		ZeroMemory(&si, sizeof(SCROLLINFO));
 
-	si.cbSize	= sizeof(SCROLLINFO);
-	si.fMask	= SIF_RANGE | SIF_PAGE | SIF_POS;
-	si.nMin		= 0;
-	si.nMax		= m_stringList.size();
-	si.nPage	= m_iTextAreaHeight;
-	si.nPos		= m_stringList.size() - m_iScrollPos;
-	SetScrollInfo(m_hWnd, SB_VERT, &si, TRUE);
+		si.cbSize	= sizeof(SCROLLINFO);
+		si.fMask	= SIF_RANGE | SIF_PAGE | SIF_POS;
+		si.nMin		= 0;
+		si.nMax		= m_stringList.size();
+		si.nPage	= m_iTextAreaHeight;
+		si.nPos		= m_stringList.size() - m_iScrollPos;
+		SetScrollInfo(m_hWnd, SB_VERT, &si, TRUE);
+	}
 }
 
 void ScriptConsole::ResizeControls()
