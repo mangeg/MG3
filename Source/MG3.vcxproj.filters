@@ -23,6 +23,9 @@
     <Filter Include="Eventhandling\WindowsEvents\Keyboard">
       <UniqueIdentifier>{3c68d9b8-d2fe-49ee-997c-d4e72df4afb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{6bf4e37a-3895-4529-b62d-72f2f61c5ffc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -54,6 +57,12 @@
     </ClCompile>
     <ClCompile Include="Events\EvtKeyboardChar.cpp">
       <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Renderer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DXGIAdapter.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +104,15 @@
     </ClInclude>
     <ClInclude Include="Utility\TArray.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\IRenderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DXGIAdapter.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
