@@ -6,6 +6,7 @@
 #include "W32Window.h"
 #include "IEventHandler.h"
 #include "IEvent.h"
+#include "MX11Renderer.h"
 
 using namespace MG3;
 
@@ -26,4 +27,6 @@ public:
 protected:
 
 	W32Window* m_pWindow;
+
+	MX11Renderer* m_pRenderer;
 };

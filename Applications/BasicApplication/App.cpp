@@ -27,7 +27,9 @@ bool BasicApplication::Initialize()
 
 	ScriptConsole::Init(m_hInstance);
 
-	
+	m_pRenderer = new MX11Renderer();
+	if(!m_pRenderer->Initialize())
+		return false;
 
 	EventManager::Get()->RegisterEvent(KEYBOARD_CHAR, this);
 
@@ -44,6 +46,17 @@ void BasicApplication::Exit()
 
 void BasicApplication::UnloadComponents()
 {
+	if(m_pRenderer)
+	{
+		m_pRenderer->Shutdown();
+		delete m_pRenderer;
+	}
+
+	if(m_pWindow)
+	{
+		m_pWindow->Exit();
+		delete m_pWindow;
+	}
 }
 
 bool BasicApplication::HandleEvent(IEvent* pEvent)
@@ -62,22 +75,6 @@ bool BasicApplication::HandleEvent(IEvent* pEvent)
 			case 's':
 				{
 					ScriptConsole::Toggle();
-					TArray<int> a;
-					a.Add(2);
-					a.Add(25);
-					a.Add(35325);
-					a.Add(2);
-					a.Add(25);
-					a.Add(35325);
-
-					a.Remove(3535);
-
-					for(int i = 0; i < a.Size(); i++)
-					{
-						std::stringstream ss;
-						ss << a[i];
-						ScriptConsole::Write(ss.str().c_str());
-					}
 					break;
 				}
 			}
