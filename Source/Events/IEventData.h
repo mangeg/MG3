@@ -1,18 +1,17 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include "HashedString.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	typedef HashedString EventType;
+
+	class IEventData
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
-
-		virtual std::wstring GetName();
-		virtual eEVENT GetEventType();
+		virtual const EventType& GetEventType(void) const = 0;
+		virtual float GetTimeStamp() const = 0;
+		virtual void Serialize(std::ostream &out) const = 0;
 	};
 }

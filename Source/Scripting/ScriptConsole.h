@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MG3.h"
+#include "StdAfx.h"
 
 namespace MG3
 {

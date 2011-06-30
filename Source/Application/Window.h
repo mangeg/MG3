@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MG3.h"
+#include "StdAfx.h"
 
 namespace MG3
 {
@@ -16,15 +16,20 @@ namespace MG3
 
 		HWND GetHandle();
 
+		void SetTitle(std::wstring& title);	
 		void SetWidth(int width);
-		void SetHeight(int height);
+		void SetHeight(int height);			
 
-		void SetTitle(std::wstring& title);
 		std::wstring GetTitle();
+		int GetWidth();
+		int GetHeight();
+
+		void SetSwapChain(int iSwapChain);
+		int GetSwapChain();
 
 	protected:
 
-		void UpdateWindowState();
+		void _UpdateWindowState();
 
 		HWND			m_hWnd;
 		std::wstring	m_sTitle;
@@ -33,6 +38,8 @@ namespace MG3
 		int				m_iHeight;
 		int				m_iLeft;
 		int				m_iTop;
+
+		int				m_iSwapChain;
 
 		DWORD			m_dStyle;
 	};

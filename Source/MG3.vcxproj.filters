@@ -26,6 +26,24 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{6bf4e37a-3895-4529-b62d-72f2f61c5ffc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering\DXGI">
+      <UniqueIdentifier>{933dbf36-d591-40a5-820b-09aff50734bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Resources">
+      <UniqueIdentifier>{1f0c0f24-07c2-4c6b-bf16-dc1a647e0ed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Pipeline">
+      <UniqueIdentifier>{a7dc6b78-b606-4ddf-a9a4-8386b0b23b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Pipeline\Fixed Stages">
+      <UniqueIdentifier>{bfee3306-5d9f-448e-98a2-2e3bb1db3be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Resources\Resource Views">
+      <UniqueIdentifier>{1f84dbaf-a8c6-48af-84ef-6190f30f55b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Resources\Textures">
+      <UniqueIdentifier>{3ab3a916-691b-4657-a613-b0156c6aac04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -62,15 +80,51 @@
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\DXGIAdapter.cpp">
+      <Filter>Rendering\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DXGIOutput.cpp">
+      <Filter>Rendering\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11SwapChain.cpp">
+      <Filter>Rendering\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11SwapChainConfig.cpp">
+      <Filter>Rendering\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ResourceProxy.cpp">
+      <Filter>Rendering\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\StdAfk.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11PipelineManager.cpp">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11OutputMergerStage.cpp">
+      <Filter>Rendering\Pipeline\Fixed Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ViewPort.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RenderTargetView.cpp">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RenderTargetViewConfig.cpp">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Texture2DConfig.cpp">
+      <Filter>Rendering\Resources\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Texture2D.cpp">
+      <Filter>Rendering\Resources\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\HashedString.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
       <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\MG3.h">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Application\Window.h">
       <Filter>Application</Filter>
@@ -111,8 +165,59 @@
     <ClInclude Include="Rendering\MX11Renderer.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\DXGIOutput.h">
+      <Filter>Rendering\DXGI</Filter>
+    </ClInclude>
     <ClInclude Include="Rendering\DXGIAdapter.h">
+      <Filter>Rendering\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11SwapChain.h">
+      <Filter>Rendering\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11SwapChainConfig.h">
+      <Filter>Rendering\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ResourceProxy.h">
+      <Filter>Rendering\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\IMX11Resource.h">
+      <Filter>Rendering\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StdAfx.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ResourceView.h">
+      <Filter>Rendering\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11PipelineManager.h">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11OutputMergerStage.h">
+      <Filter>Rendering\Pipeline\Fixed Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ViewPort.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RenderTargetView.h">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RenderTargetViewConfig.h">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Texture2D.h">
+      <Filter>Rendering\Resources\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Texture2DConfig.h">
+      <Filter>Rendering\Resources\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\HashedString.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\IEventData.h">
+      <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\BaseEventData.h">
+      <Filter>Eventhandling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

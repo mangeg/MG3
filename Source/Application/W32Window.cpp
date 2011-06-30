@@ -1,3 +1,4 @@
+#include "StdAfx.h"
 #include "W32Window.h"
 
 using namespace MG3;

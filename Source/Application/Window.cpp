@@ -1,7 +1,8 @@
+#include "StdAfx.h"
 #include "Window.h"
 
 using namespace MG3;
-
+//------------------------------------------------------------------------|
 Window::Window()
 {
 	m_hWnd = 0;
@@ -12,28 +13,28 @@ Window::Window()
 	m_iLeft = 300;
 	m_iTop = 200;
 }
-
+//------------------------------------------------------------------------|
 Window::~Window()
 {
 }
-
+//------------------------------------------------------------------------|
 HWND Window::GetHandle()
 {
 	return m_hWnd;
 }
-
+//------------------------------------------------------------------------|
 void Window::SetWidth(int width)
 {
 	m_iWidth = width;
-	UpdateWindowState();
+	_UpdateWindowState();
 }
-
+//------------------------------------------------------------------------|
 void Window::SetHeight(int height)
 {
 	m_iHeight = height;
-	UpdateWindowState();
+	_UpdateWindowState();
 }
-
+//------------------------------------------------------------------------|
 void Window::SetTitle(std::wstring& title)
 {
 	m_sTitle = title;
@@ -41,13 +42,33 @@ void Window::SetTitle(std::wstring& title)
 	if(m_hWnd != 0)
 		SetWindowText(m_hWnd, m_sTitle.c_str());
 }
-
+//------------------------------------------------------------------------|
 std::wstring Window::GetTitle()
 {
 	return m_sTitle;
 }
-
-void Window::UpdateWindowState()
+//------------------------------------------------------------------------|
+int Window::GetHeight()
+{
+	return m_iHeight;
+}
+//------------------------------------------------------------------------|
+int Window::GetWidth()
+{
+	return m_iWidth;
+}
+//------------------------------------------------------------------------|
+void Window::SetSwapChain(int iSwapChain)
+{
+	m_iSwapChain = iSwapChain;
+}
+//------------------------------------------------------------------------|
+int Window::GetSwapChain()
+{
+	return m_iSwapChain;
+}
+//------------------------------------------------------------------------|
+void Window::_UpdateWindowState()
 {
 	if(m_hWnd != 0)
 	{

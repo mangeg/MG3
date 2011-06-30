@@ -1,18 +1,18 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include "MX11ResourceView.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	class MX11RenderTargetView : public MX11ResourceView
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
+		MX11RenderTargetView(ID3D11RenderTargetView* pRTView);
+		virtual ~MX11RenderTargetView();
+	protected:
+		ID3D11RenderTargetView*	m_pRTView;
 
-		virtual std::wstring GetName();
-		virtual eEVENT GetEventType();
+		friend MX11PipelineManager;
 	};
 }

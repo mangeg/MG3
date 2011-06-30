@@ -1,18 +1,19 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include "MX11Renderer.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	class DXGIOutput
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
+		DXGIOutput(IDXGIOutput* pOutput);
+		virtual ~DXGIOutput();
+	
+	protected:
+		IDXGIOutput*	m_pOutput;
 
-		virtual std::wstring GetName();
-		virtual eEVENT GetEventType();
+		friend MX11Renderer;
 	};
 }

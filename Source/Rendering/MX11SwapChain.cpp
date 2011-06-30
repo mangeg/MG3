@@ -1,24 +1,21 @@
 //------------------------------------------------------------------------|
 #include "StdAfx.h"
-#include "EvtKeyboardChar.h"
+#include "MX11SwapChain.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
-EvtKeyboardChar::EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam)
-	: EvtKeyboardMsg(hWnd, wParam, lParam)
+MX11SwapChain::MX11SwapChain(IDXGISwapChain* pSwapChain, ResourcePtr resource)
 {
+	m_pSwapChain = pSwapChain;
+	m_Resource = resource;
 }
 //------------------------------------------------------------------------|
-EvtKeyboardChar::~EvtKeyboardChar()
+MX11SwapChain::~MX11SwapChain()
 {
+	SAFE_RELEASE(m_pSwapChain);
 }
 //------------------------------------------------------------------------|
-std::wstring EvtKeyboardChar::GetName()
+IDXGISwapChain* MX11SwapChain::Get()
 {
-	return std::wstring(L"EvtKeyboard::Char");
-}
-//------------------------------------------------------------------------|
-eEVENT EvtKeyboardChar::GetEventType()
-{
-	return KEYBOARD_CHAR;
+	return m_pSwapChain;
 }

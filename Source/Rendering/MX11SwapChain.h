@@ -1,25 +1,22 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
 #include "MX11Renderer.h"
-#include "DXGIOutput.h"
+#include "MX11ResourceProxy.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class DXGIAdapter
+	class MX11SwapChain
 	{
 	public:
-		DXGIAdapter(IDXGIAdapter1* pAdapter);
-		virtual ~DXGIAdapter();
+		MX11SwapChain(IDXGISwapChain* pSwapChain, ResourcePtr resource);
+		virtual ~MX11SwapChain();
 
-		std::wstring GetName();
+		IDXGISwapChain* Get();
 
 	protected:
-		IDXGIAdapter1* m_pAdapter;
-		TArray<DXGIOutput*> m_vOutputs;
-
-		DXGI_ADAPTER_DESC1 m_Desc;
+		IDXGISwapChain*	m_pSwapChain;
+		ResourcePtr		m_Resource;
 
 		friend MX11Renderer;
 	};

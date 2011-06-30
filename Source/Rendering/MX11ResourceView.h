@@ -1,15 +1,13 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
+#include "MX11Renderer.h"
+//------------------------------------------------------------------------|
 namespace MG3
 {
-	class StringTools
+	class MX11ResourceView
 	{
 	public:
-		static std::string ToAscii(std::wstring& txt);
-		static std::wstring ToUnicode(std::string& txt);
-
-	private:
-		StringTools();
+		virtual ~MX11ResourceView(){};
 	};
 }

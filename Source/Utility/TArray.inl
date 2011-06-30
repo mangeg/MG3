@@ -99,7 +99,7 @@ int TArray<T>::Find(const T& item) const
 }
 //------------------------------------------------------------------------|
 template <class T>
-bool TArray<T>::InRange(int i) const
+bool TArray<T>::InRange(int index) const
 {
 	return (index >= 0 && index < m_iSize);
 }

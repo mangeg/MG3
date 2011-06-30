@@ -1,26 +1,19 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
 #include "MX11Renderer.h"
-#include "DXGIOutput.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class DXGIAdapter
+	class IMX11Resource
 	{
 	public:
-		DXGIAdapter(IDXGIAdapter1* pAdapter);
-		virtual ~DXGIAdapter();
+		virtual ~IMX11Resource() {};
 
-		std::wstring GetName();
+		virtual D3D11_RESOURCE_DIMENSION	GetType() = 0;
+		virtual ID3D11Resource*				GetResource() = 0;
 
-	protected:
-		IDXGIAdapter1* m_pAdapter;
-		TArray<DXGIOutput*> m_vOutputs;
-
-		DXGI_ADAPTER_DESC1 m_Desc;
-
-		friend MX11Renderer;
+		virtual UINT	GetEvictionPriority() = 0;
+		virtual void	SetEvictionPriority( UINT EvictionPriority ) = 0;
 	};
 }

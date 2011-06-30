@@ -49,12 +49,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Application;Scripting;Utility;Events;Rendering</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -72,13 +74,13 @@ copy Rendering\*.h ..\SDK\Include\</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Application;Scripting;Utility;Events;Rendering</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,25 +107,57 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClCompile Include="Events\EvtKeyboardMsg.cpp" />
     <ClCompile Include="Events\EvtWindowMsg.cpp" />
     <ClCompile Include="Rendering\DXGIAdapter.cpp" />
+    <ClCompile Include="Rendering\DXGIOutput.cpp" />
+    <ClCompile Include="Rendering\MX11OutputMergerStage.cpp" />
+    <ClCompile Include="Rendering\MX11PipelineManager.cpp" />
     <ClCompile Include="Rendering\MX11Renderer.cpp" />
+    <ClCompile Include="Rendering\MX11RenderTargetView.cpp" />
+    <ClCompile Include="Rendering\MX11ResourceProxy.cpp" />
+    <ClCompile Include="Rendering\MX11SwapChain.cpp" />
+    <ClCompile Include="Rendering\MX11SwapChainConfig.cpp" />
+    <ClCompile Include="Rendering\MX11Texture2D.cpp" />
+    <ClCompile Include="Rendering\MX11Texture2DConfig.cpp" />
+    <ClCompile Include="Rendering\MX11RenderTargetViewConfig.cpp" />
+    <ClCompile Include="Rendering\MX11ViewPort.cpp" />
     <ClCompile Include="Scripting\ScriptConsole.cpp" />
+    <ClCompile Include="Utility\HashedString.cpp" />
+    <ClCompile Include="Utility\StdAfk.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Utility\StringTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Application\W32Window.h" />
     <ClInclude Include="Application\Window.h" />
+    <ClInclude Include="Events\BaseEventData.h" />
     <ClInclude Include="Events\EventManager.h" />
     <ClInclude Include="Events\EvtKeyboardChar.h" />
     <ClInclude Include="Events\EvtKeyboardMsg.h" />
     <ClInclude Include="Events\IEvent.h" />
+    <ClInclude Include="Events\IEventData.h" />
     <ClInclude Include="Events\IEventHandler.h" />
     <ClInclude Include="Events\EvtWindowsMsg.h" />
     <ClInclude Include="Rendering\DXGIAdapter.h" />
+    <ClInclude Include="Rendering\DXGIOutput.h" />
+    <ClInclude Include="Rendering\MX11OutputMergerStage.h" />
+    <ClInclude Include="Rendering\MX11PipelineManager.h" />
     <ClInclude Include="Rendering\MX11Renderer.h" />
     <ClInclude Include="Rendering\IRenderer.h" />
+    <ClInclude Include="Rendering\MX11RenderTargetView.h" />
+    <ClInclude Include="Rendering\MX11RenderTargetViewConfig.h" />
+    <ClInclude Include="Rendering\IMX11Resource.h" />
+    <ClInclude Include="Rendering\MX11ResourceProxy.h" />
+    <ClInclude Include="Rendering\MX11ResourceView.h" />
+    <ClInclude Include="Rendering\MX11SwapChain.h" />
+    <ClInclude Include="Rendering\MX11SwapChainConfig.h" />
+    <ClInclude Include="Rendering\MX11Texture2D.h" />
+    <ClInclude Include="Rendering\MX11Texture2DConfig.h" />
+    <ClInclude Include="Rendering\MX11ViewPort.h" />
     <ClInclude Include="Scripting\ScriptConsole.h" />
-    <ClInclude Include="Utility\MG3.h" />
+    <ClInclude Include="Utility\HashedString.h" />
+    <ClInclude Include="Utility\StdAfx.h" />
     <ClInclude Include="Utility\StringTools.h" />
     <ClInclude Include="Utility\TArray.h" />
   </ItemGroup>

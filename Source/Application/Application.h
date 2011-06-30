@@ -2,7 +2,7 @@
 #pragma once
 
 //------------------------------------------------------------------------|
-#include "MG3.h"
+#include "StdAfx.h"
 #include "IEventHandler.h"
 #include "IEvent.h"
 #include "EventManager.h"

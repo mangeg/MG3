@@ -29,4 +29,8 @@ protected:
 	W32Window* m_pWindow;
 
 	MX11Renderer* m_pRenderer;
+
+	ResourcePtr	m_RenderTarget;
+
+	int			m_iSwapChain;
 };
