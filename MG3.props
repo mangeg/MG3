@@ -5,12 +5,13 @@
   <PropertyGroup>
     <IncludePath>$(SolutionDir)SDK\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)SDK\Library\$(Configuration);$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Applications\Bin\$(Configuration)\</OutDir>
-    <IntDir>Bin\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Bin\</OutDir>
+    <IntDir>$(SolutionDir)Applications\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>MG3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -38,12 +38,12 @@ void MX11PipelineManager::ClearBuffers(XMFLOAT4 color, float depth, UINT stencil
 		}
 	}
 
-	if(m_OutputMergerStage.m_pActiveDeptStencilView != NULL)
+	if(m_OutputMergerStage.m_pActiveDeptStencilView)
 	{
 		m_pContext->ClearDepthStencilView(m_OutputMergerStage.m_pActiveDeptStencilView, D3D11_CLEAR_DEPTH, depth, stencil );
 	}
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11PipelineManager::BindRenderTarget( int index, ResourcePtr RenderTarget )
 {
 	MX11RenderTargetView* pView = MX11Renderer::Get()->GetRenderTargetView( RenderTarget->m_iRTVResource );
@@ -75,7 +75,7 @@ void MX11PipelineManager::ClearRenderTargets()
 {
 	m_OutputMergerStage.ClearResources(m_pContext);
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11PipelineManager::ApplyRenderTargets( )
 {
 	m_OutputMergerStage.BindResource(m_pContext);

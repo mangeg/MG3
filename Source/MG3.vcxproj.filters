@@ -44,18 +44,15 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{aa5d550d-8967-4cc6-a060-bf1f31bd0786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Window">
+      <UniqueIdentifier>{d7910368-e359-460c-a2b7-10bfe6fe2077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="Application\Application.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Window.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\W32Window.cpp">
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="Scripting\ScriptConsole.cpp">
@@ -145,15 +142,15 @@
     <ClCompile Include="Rendering\MX11DeptStencilView.cpp">
       <Filter>Rendering\Resources\Resource Views</Filter>
     </ClCompile>
+    <ClCompile Include="Application\W32Window.cpp">
+      <Filter>Application\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Window.cpp">
+      <Filter>Application\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Window.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\W32Window.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\ScriptConsole.h">
@@ -199,9 +196,6 @@
       <Filter>Rendering\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\IMX11Resource.h">
-      <Filter>Rendering\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\MX11ResourceView.h">
       <Filter>Rendering\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\MX11PipelineManager.h">
@@ -262,6 +256,15 @@
       <Filter>Rendering\Resources\Resource Views</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\MX11DeptStencilView.h">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Window.h">
+      <Filter>Application\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\W32Window.h">
+      <Filter>Application\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ResourceView.h">
       <Filter>Rendering\Resources\Resource Views</Filter>
     </ClInclude>
   </ItemGroup>

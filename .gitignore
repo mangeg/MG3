@@ -8,3 +8,5 @@
 *.user
 /Applications/BasicApplication/Bin
 /SDK/Library
+/Obj
+/Applications/Obj

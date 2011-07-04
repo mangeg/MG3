@@ -91,8 +91,8 @@ void BasicApplication::Update()
 	m_pTimer->Update();
 
 	float fBlue = sinf( m_pTimer->GameTime() ) * 0.25f + 0.5f;
-	//fBlue = 0.2;
-	m_pRenderer->m_pPipeline->ClearBuffers(XMFLOAT4(0.0f, 0.2f, fBlue, 1.0f));
+
+	m_pRenderer->m_pPipeline->ClearBuffers(XMFLOAT4(0.0f, 0.2f, 1.0, 1.0f));
 	m_pRenderer->Present(m_pWindow->GetSwapChain());
 }
 //------------------------------------------------------------------------|
