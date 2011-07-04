@@ -12,6 +12,9 @@ namespace MG3
 		EvtWindowsMsg(HWND hWnd, UINT wParam, UINT lParam);
 		virtual ~EvtWindowsMsg();
 
+		virtual const EventType& GetEventType() const = 0;
+		virtual void Serialize(std::ostream &out) const { };
+
 		HWND GetWindowHandle();
 		UINT GetWParam();
 		UINT GetLParam();

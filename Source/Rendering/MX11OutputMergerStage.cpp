@@ -8,6 +8,8 @@ MX11OutputMergerStage::MX11OutputMergerStage()
 {
 	ZeroMemory(m_vRenderTargetViews, sizeof(m_vRenderTargetViews[0]) * D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT);
 	ZeroMemory(m_vActiveRenderTargetViews, sizeof(m_vActiveRenderTargetViews[0]) * D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT);
+	m_pDeptStencilView = NULL;
+	m_pActiveDeptStencilView = NULL;
 }
 //------------------------------------------------------------------------|
 MX11OutputMergerStage::~MX11OutputMergerStage()
@@ -22,6 +24,11 @@ void MX11OutputMergerStage::SetRenderTargetView(int index, ID3D11RenderTargetVie
 	}
 }
 //------------------------------------------------------------------------|
+void MX11OutputMergerStage::SetDeptStencilView(ID3D11DepthStencilView* pDSView)
+{
+	m_pDeptStencilView = pDSView;
+}
+//------------------------------------------------------------------------|
 void MX11OutputMergerStage::BindResource(ID3D11DeviceContext* pContext)
 {
 	int iChanged = 0;
@@ -33,9 +40,12 @@ void MX11OutputMergerStage::BindResource(ID3D11DeviceContext* pContext)
 		}
 	}
 
+	if(m_pDeptStencilView != m_pActiveDeptStencilView)
+		iChanged++;
+
 	if(iChanged > 0)
 	{
-		pContext->OMSetRenderTargets(D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT - 1, m_vRenderTargetViews, NULL);
+		pContext->OMSetRenderTargets(D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT - 1, m_vRenderTargetViews, m_pDeptStencilView);
 	}
 
 	for ( int i = 0; i < D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT; i++ )

@@ -1,24 +1,24 @@
 
 #include "StdAfx.h"
 #include "Application.h"
-
 //------------------------------------------------------------------------|
 using namespace MG3;
-
 //------------------------------------------------------------------------|
 Application* Application::ms_pAppliction = NULL;
 
 //------------------------------------------------------------------------|
 Application::Application()
 {
-	ms_pAppliction = this;
+	ms_pAppliction = this;	
 
-	m_pEventManager = new EventManager();
+	m_pTimer = MG_NEW Timer();
+	m_pTimer->Update();
 }
 
 //------------------------------------------------------------------------|
 Application::~Application()
-{	
+{		
+	SAFE_DELETE(m_pTimer);
 }
 
 //------------------------------------------------------------------------|

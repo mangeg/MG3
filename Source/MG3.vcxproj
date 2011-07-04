@@ -103,11 +103,15 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClCompile Include="Application\W32Window.cpp" />
     <ClCompile Include="Application\Window.cpp" />
     <ClCompile Include="Events\EventManager.cpp" />
+    <ClCompile Include="Events\EventSnooper.cpp" />
     <ClCompile Include="Events\EvtKeyboardChar.cpp" />
     <ClCompile Include="Events\EvtKeyboardMsg.cpp" />
     <ClCompile Include="Events\EvtWindowMsg.cpp" />
+    <ClCompile Include="Events\IEventManager.cpp" />
     <ClCompile Include="Rendering\DXGIAdapter.cpp" />
     <ClCompile Include="Rendering\DXGIOutput.cpp" />
+    <ClCompile Include="Rendering\MX11DeptStencilView.cpp" />
+    <ClCompile Include="Rendering\MX11DeptStencilViewConfig.cpp" />
     <ClCompile Include="Rendering\MX11OutputMergerStage.cpp" />
     <ClCompile Include="Rendering\MX11PipelineManager.cpp" />
     <ClCompile Include="Rendering\MX11Renderer.cpp" />
@@ -120,27 +124,33 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClCompile Include="Rendering\MX11RenderTargetViewConfig.cpp" />
     <ClCompile Include="Rendering\MX11ViewPort.cpp" />
     <ClCompile Include="Scripting\ScriptConsole.cpp" />
+    <ClCompile Include="Utility\FileSystem.cpp" />
     <ClCompile Include="Utility\HashedString.cpp" />
+    <ClCompile Include="Utility\Log.cpp" />
+    <ClCompile Include="Utility\MGUtils.cpp" />
     <ClCompile Include="Utility\StdAfk.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utility\StringTools.cpp" />
+    <ClCompile Include="Utility\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
     <ClInclude Include="Application\W32Window.h" />
     <ClInclude Include="Application\Window.h" />
-    <ClInclude Include="Events\BaseEventData.h" />
     <ClInclude Include="Events\EventManager.h" />
+    <ClInclude Include="Events\EventSnooper.h" />
     <ClInclude Include="Events\EvtKeyboardChar.h" />
     <ClInclude Include="Events\EvtKeyboardMsg.h" />
     <ClInclude Include="Events\IEvent.h" />
     <ClInclude Include="Events\IEventData.h" />
     <ClInclude Include="Events\IEventHandler.h" />
     <ClInclude Include="Events\EvtWindowsMsg.h" />
+    <ClInclude Include="Events\IEventManager.h" />
     <ClInclude Include="Rendering\DXGIAdapter.h" />
     <ClInclude Include="Rendering\DXGIOutput.h" />
+    <ClInclude Include="Rendering\MX11DeptStencilView.h" />
+    <ClInclude Include="Rendering\MX11DeptStencilViewConfig.h" />
     <ClInclude Include="Rendering\MX11OutputMergerStage.h" />
     <ClInclude Include="Rendering\MX11PipelineManager.h" />
     <ClInclude Include="Rendering\MX11Renderer.h" />
@@ -156,10 +166,14 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClInclude Include="Rendering\MX11Texture2DConfig.h" />
     <ClInclude Include="Rendering\MX11ViewPort.h" />
     <ClInclude Include="Scripting\ScriptConsole.h" />
+    <ClInclude Include="Utility\FileSystem.h" />
     <ClInclude Include="Utility\HashedString.h" />
+    <ClInclude Include="Utility\Log.h" />
+    <ClInclude Include="Utility\MGUtils.h" />
     <ClInclude Include="Utility\StdAfx.h" />
     <ClInclude Include="Utility\StringTools.h" />
     <ClInclude Include="Utility\TArray.h" />
+    <ClInclude Include="Utility\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Utility\TArray.inl" />

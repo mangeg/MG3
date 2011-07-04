@@ -15,10 +15,11 @@ namespace MG3
 
 		void SetDeviceContext(ID3D11DeviceContext* pDeviceContext);
 
-		void ClearBuffers(XMFLOAT4 color);
+		void ClearBuffers(XMFLOAT4 color, float depth = 1.0f, UINT stencil = 0);
 
 		void ClearRenderTargets();
 		void BindRenderTarget(int index, ResourcePtr pRT);
+		void BindDeptTarget(ResourcePtr pDT);
 		void ApplyRenderTargets();
 
 		void SetViewPort(int ID);

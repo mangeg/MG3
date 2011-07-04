@@ -4,33 +4,36 @@
 //------------------------------------------------------------------------|
 #include "Application.h"
 #include "W32Window.h"
+#include "EventManager.h"
 #include "IEventHandler.h"
-#include "IEvent.h"
 #include "MX11Renderer.h"
 
-using namespace MG3;
-
-class BasicApplication : public Application
+namespace MG3
 {
-public:
-	BasicApplication();
+	class BasicApplication : public Application
+	{
+	public:
+		BasicApplication();
 	
-	virtual bool SetupComponents();
-	virtual bool Initialize();
-	virtual void Update();
-	virtual void Exit();
-	virtual void UnloadComponents();
+		virtual bool SetupComponents();
+		virtual bool Initialize();
+		virtual void Update();
+		virtual void Exit();
+		virtual void UnloadComponents();
 
-	virtual bool HandleEvent(IEvent* pEvent);
-	virtual std::wstring GetName();
+		virtual bool HandleEvent(IEventData const& pEvent);
+		virtual std::wstring GetName();
 
-protected:
+		EventManager* m_pEventManager;
 
-	W32Window* m_pWindow;
+	protected:
 
-	MX11Renderer* m_pRenderer;
+		W32Window* m_pWindow;
 
-	ResourcePtr	m_RenderTarget;
+		MX11Renderer* m_pRenderer;
 
-	int			m_iSwapChain;
-};
+		ResourcePtr	m_RenderTarget;
+
+		int			m_iSwapChain;
+	};
+}

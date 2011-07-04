@@ -20,6 +20,7 @@ namespace MG3
 	class MX11Texture2DConfig;
 
 	class MX11RenderTargetView;
+	class MX11DeptStencilView;
 
 	class MX11PipelineManager;
 
@@ -50,13 +51,17 @@ namespace MG3
 		virtual void	Shutdown();
 		
 		int	CreateRenderTargetView(int ResourceID, D3D11_RENDER_TARGET_VIEW_DESC* pDesc);
+		int CreateDeptStenchilView(int ResourceID, D3D11_DEPTH_STENCIL_VIEW_DESC* pDesc);
 
 		virtual void	Present(int iSwapChain = -1);
 		int		CreateSwapchain(MX11SwapChainConfig* pConfig);
 		int		CreateViewPort(D3D11_VIEWPORT viewport);
 
 		ResourcePtr GetSwapChainResource(int ID);
-		MX11RenderTargetView* GetRenderTargetView(int ID);
+		ResourcePtr CreateTexture2D(MX11Texture2DConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData);
+
+		MX11RenderTargetView*	GetRenderTargetView(int ID);
+		MX11DeptStencilView*	GetDeptStencilView(int ID);
 		MX11ViewPort* GetViewPort(int ID);
 
 	public:
@@ -71,6 +76,7 @@ namespace MG3
 		TArray<IMX11Resource*> m_vResources;
 
 		TArray<MX11RenderTargetView*>	m_vRenderTargetViews;
+		TArray<MX11DeptStencilView*>	m_vDeptStencilViews;
 
 		TArray<MX11ViewPort*>	m_vViewPorts;
 		

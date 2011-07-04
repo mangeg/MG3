@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-
+#include <string>
 //------------------------------------------------------------------------|
 namespace MG3
 {
@@ -30,11 +30,11 @@ namespace MG3
 		{
 			return reinterpret_cast<unsigned long>(m_ident);
 		}
-		wchar_t const* const GetStr() const {return m_cIdentStr;}
+		const std::wstring& GetStr() const {return m_cIdentStr;}
 
 	protected:
 		
 		void*			m_ident;
-		wchar_t const*	m_cIdentStr;
-	};	
+		std::wstring	m_cIdentStr;
+	};		
 }

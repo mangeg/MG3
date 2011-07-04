@@ -5,6 +5,7 @@
 #include "MX11ViewPort.h"
 
 #include "MX11RenderTargetView.h"
+#include "MX11DeptStencilView.h"
 
 #include "MX11SwapChainConfig.h"
 #include "MX11Texture2DConfig.h"
@@ -51,7 +52,7 @@ bool MX11Renderer::Initialize()
 	TArray<DXGIAdapter*> vAdapters;
 	while(pFactory->EnumAdapters1(vAdapters.Size(), &pAdapter) != DXGI_ERROR_NOT_FOUND)
 	{
-		DXGIAdapter* a = new DXGIAdapter(pAdapter);
+		DXGIAdapter* a = MG_NEW DXGIAdapter(pAdapter);
 		vAdapters.Add( a );
 	}
 
@@ -93,7 +94,7 @@ bool MX11Renderer::Initialize()
 		return false;
 	}
 
-	m_pPipeline = new MX11PipelineManager();
+	m_pPipeline = MG_NEW MX11PipelineManager();
 	m_pPipeline->SetDeviceContext(pContext);
 
 	// Release adapters and factory
@@ -121,12 +122,19 @@ void MX11Renderer::Shutdown()
 {
 	SAFE_DELETE(m_pPipeline);	
 
+	for(int i = 0; i < m_vViewPorts.Size(); i++)
+		delete m_vViewPorts[i];
 	for(int i = 0; i < m_vRenderTargetViews.Size(); i++)
 		delete m_vRenderTargetViews[i];
+	for(int i = 0; i < m_vDeptStencilViews.Size(); i++)
+		delete m_vDeptStencilViews[i];
 	for(int i = 0; i < m_vResources.Size(); i++)
 		delete m_vResources[i];
 	for(int i = 0; i < m_vSwapChains.Size(); i++)
+	{
+		m_vSwapChains[i]->Get()->SetFullscreenState(FALSE, NULL);
 		delete m_vSwapChains[i];
+	}
 
 	SAFE_RELEASE(m_pDevice);
 	SAFE_RELEASE(m_pDebugger);
@@ -151,13 +159,13 @@ int MX11Renderer::CreateSwapchain(MX11SwapChainConfig* pConfig)
 	HRESULT hr;
 
 	IDXGIDevice1* pDXGIDevice;
-	hr = m_pDevice->QueryInterface(__uuidof(IDXGIDevice1), (void**)&pDXGIDevice);
+	hr = m_pDevice->QueryInterface(__uuidof(IDXGIDevice1), reinterpret_cast< void** >(&pDXGIDevice));
 
 	IDXGIAdapter1* pAdapter;
-	hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter1), (void **)&pAdapter);
+	hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter1), reinterpret_cast< void** >(&pAdapter));
 
 	IDXGIFactory1* pFactory;
-	pAdapter->GetParent(__uuidof(IDXGIFactory1), (void **)&pFactory);
+	pAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast< void** >(&pFactory));
 
 	IDXGISwapChain* pSwapChain;	
 	hr = pFactory->CreateSwapChain(m_pDevice, &pConfig->m_Desc, &pSwapChain);
@@ -169,34 +177,15 @@ int MX11Renderer::CreateSwapchain(MX11SwapChainConfig* pConfig)
 	ID3D11Texture2D *pBackBuffer;
 	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast< void** >(&pBackBuffer));
 
-	m_vResources.Add(new MX11Texture2D(pBackBuffer));
+	m_vResources.Add(MG_NEW MX11Texture2D(pBackBuffer));
 
 	int ResourceID = m_vResources.Size() - 1 + RT_TEXTURE2D;
 	MX11Texture2DConfig TextureConfig;
 	pBackBuffer->GetDesc(&TextureConfig.m_Desc);
 
-	ResourcePtr Proxy(new MX11ResourceProxy(ResourceID, &TextureConfig, this));
+	ResourcePtr Proxy(MG_NEW MX11ResourceProxy(ResourceID, &TextureConfig, this));
 
-	m_vSwapChains.Add(new MX11SwapChain(pSwapChain, Proxy));
-
-
-	/*
-	// set the render target as the back buffer
-	m_pContext->OMSetRenderTargets(1, &m_pRTView, NULL);
-
-	D3D11_VIEWPORT viewport;
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
-
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(800);
-	viewport.Height = static_cast<float>(600);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-	m_pContext->RSSetViewports(1, &viewport);
-	*/
-
+	m_vSwapChains.Add(MG_NEW MX11SwapChain(pSwapChain, Proxy));
 
 	return m_vSwapChains.Size() - 1;
 }
@@ -219,7 +208,7 @@ int MX11Renderer::CreateRenderTargetView(int ResourceID, D3D11_RENDER_TARGET_VIE
 
 		if(SUCCEEDED(hr))
 		{
-			MX11RenderTargetView* pRTView = new MX11RenderTargetView(pView);
+			MX11RenderTargetView* pRTView = MG_NEW MX11RenderTargetView(pView);
 			m_vRenderTargetViews.Add(pRTView);
 
 			return m_vRenderTargetViews.Size() - 1;
@@ -230,12 +219,56 @@ int MX11Renderer::CreateRenderTargetView(int ResourceID, D3D11_RENDER_TARGET_VIE
 	return -1;
 }
 //------------------------------------------------------------------------|
+int MX11Renderer::CreateDeptStenchilView(int ResourceID, D3D11_DEPTH_STENCIL_VIEW_DESC* pDesc)
+{
+	int TYPE = ResourceID & 0x00FF0000;
+	int ID = ResourceID & 0x0000FFFF;
+	ID3D11Resource* pResource = NULL;
+
+	if(m_vResources.InRange(ID))
+		pResource = m_vResources[ID]->GetResource();
+
+	if(pResource)
+	{
+		ID3D11DepthStencilView* pView = NULL;
+		HRESULT hr = m_pDevice->CreateDepthStencilView(pResource, pDesc, &pView);
+
+		if(SUCCEEDED(hr))
+		{
+			MX11DeptStencilView* pDeptStencil = MG_NEW MX11DeptStencilView(pView);
+			m_vDeptStencilViews.Add(pDeptStencil);
+
+			return m_vDeptStencilViews.Size() - 1;
+		}
+	}
+
+	return -1;
+}
+//------------------------------------------------------------------------|
 int MX11Renderer::CreateViewPort(D3D11_VIEWPORT viewport)
 {
-	MX11ViewPort* pViewPort = new MX11ViewPort(viewport);
+	MX11ViewPort* pViewPort = MG_NEW MX11ViewPort(viewport);
 	m_vViewPorts.Add(pViewPort);
 
 	return m_vViewPorts.Size() - 1;
+}
+//------------------------------------------------------------------------|
+ResourcePtr MX11Renderer::CreateTexture2D(MX11Texture2DConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData)
+{
+	ID3D11Texture2D* pTexture = NULL;
+	HRESULT hr = m_pDevice->CreateTexture2D(&pConfig->m_Desc, pData, &pTexture);
+	if(SUCCEEDED(hr))
+	{
+		MX11Texture2D* pTex = MG_NEW MX11Texture2D(pTexture);
+		pTex->SetDesiredDescription(pConfig->GetTextureDesc());
+		m_vResources.Add(pTex);
+
+		int ResourceID = (m_vResources.Size() - 1) + RT_TEXTURE2D;
+		ResourcePtr Proxy(MG_NEW MX11ResourceProxy(ResourceID, pConfig, this));
+		return Proxy;
+	}
+
+	return ResourcePtr(MG_NEW MX11ResourceProxy());
 }
 //------------------------------------------------------------------------|
 ResourcePtr MX11Renderer::GetSwapChainResource(int ID)
@@ -244,12 +277,17 @@ ResourcePtr MX11Renderer::GetSwapChainResource(int ID)
 	{
 		return m_vSwapChains[ID]->m_Resource;
 	}
-	return ResourcePtr(new MX11ResourceProxy());
+	return ResourcePtr(MG_NEW MX11ResourceProxy());
 }
 //------------------------------------------------------------------------|
 MX11RenderTargetView* MX11Renderer::GetRenderTargetView(int ID)
 {
 	return m_vRenderTargetViews[ID];
+}
+//------------------------------------------------------------------------|
+MX11DeptStencilView* MX11Renderer::GetDeptStencilView(int ID)
+{
+	return m_vDeptStencilViews[ID];
 }
 //------------------------------------------------------------------------|
 MX11ViewPort* MX11Renderer::GetViewPort(int ID)

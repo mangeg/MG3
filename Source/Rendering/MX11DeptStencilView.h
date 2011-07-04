@@ -1,19 +1,19 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include "MX11Renderer.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	class MX11DeptStencilView
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
+		MX11DeptStencilView( ID3D11DepthStencilView* pView );
+		virtual ~MX11DeptStencilView();
 
-		virtual const EventType& GetEventType() const;
+	protected:
+		ID3D11DepthStencilView*	m_pView;
 
-		static const EventType m_sEventType;
-	};	
+		friend MX11PipelineManager;
+	};
 }

@@ -4,7 +4,7 @@
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
-EvtWindowsMsg::EvtWindowsMsg(HWND hWnd, UINT wParam, UINT lParam)
+EvtWindowsMsg::EvtWindowsMsg(HWND hWnd, UINT wParam, UINT lParam)	
 {
 	m_hWnd = hWnd;
 	m_iWParam = wParam;

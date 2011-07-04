@@ -13,6 +13,7 @@ MX11SwapChain::MX11SwapChain(IDXGISwapChain* pSwapChain, ResourcePtr resource)
 MX11SwapChain::~MX11SwapChain()
 {
 	SAFE_RELEASE(m_pSwapChain);
+	m_Resource = ResourcePtr();
 }
 //------------------------------------------------------------------------|
 IDXGISwapChain* MX11SwapChain::Get()

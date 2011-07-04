@@ -8,9 +8,6 @@
     <Filter Include="Application">
       <UniqueIdentifier>{52042e69-be2e-49a1-bf66-dc371ec3a375}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{b78981e2-381a-4867-8e53-74058e24586d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{26b1d944-1628-4736-9ff6-f057aeaef509}</UniqueIdentifier>
     </Filter>
@@ -44,6 +41,9 @@
     <Filter Include="Rendering\Resources\Textures">
       <UniqueIdentifier>{3ab3a916-691b-4657-a613-b0156c6aac04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{aa5d550d-8967-4cc6-a060-bf1f31bd0786}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -60,9 +60,6 @@
     </ClCompile>
     <ClCompile Include="Scripting\ScriptConsole.cpp">
       <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\StringTools.cpp">
-      <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Events\EventManager.cpp">
       <Filter>Eventhandling</Filter>
@@ -94,9 +91,6 @@
     <ClCompile Include="Rendering\MX11ResourceProxy.cpp">
       <Filter>Rendering\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Utility\StdAfk.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\MX11PipelineManager.cpp">
       <Filter>Rendering\Pipeline</Filter>
     </ClCompile>
@@ -118,8 +112,38 @@
     <ClCompile Include="Rendering\MX11Texture2D.cpp">
       <Filter>Rendering\Resources\Textures</Filter>
     </ClCompile>
+    <ClCompile Include="Events\EventSnooper.cpp">
+      <Filter>Eventhandling</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\IEventManager.cpp">
+      <Filter>Eventhandling</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\MGUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\StdAfk.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\StringTools.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\FileSystem.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="Utility\HashedString.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Log.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Timer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11DeptStencilViewConfig.cpp">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11DeptStencilView.cpp">
+      <Filter>Rendering\Resources\Resource Views</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="Scripting\ScriptConsole.h">
       <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\StringTools.h">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Events\EventManager.h">
       <Filter>Eventhandling</Filter>
@@ -155,9 +176,6 @@
     </ClInclude>
     <ClInclude Include="Events\EvtKeyboardChar.h">
       <Filter>Eventhandling\WindowsEvents\Keyboard</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\TArray.h">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\IRenderer.h">
       <Filter>Rendering</Filter>
@@ -183,9 +201,6 @@
     <ClInclude Include="Rendering\IMX11Resource.h">
       <Filter>Rendering\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\StdAfx.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\MX11ResourceView.h">
       <Filter>Rendering\Resources</Filter>
     </ClInclude>
@@ -210,19 +225,49 @@
     <ClInclude Include="Rendering\MX11Texture2DConfig.h">
       <Filter>Rendering\Resources\Textures</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\HashedString.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Events\IEventData.h">
       <Filter>Eventhandling</Filter>
     </ClInclude>
-    <ClInclude Include="Events\BaseEventData.h">
+    <ClInclude Include="Events\EventSnooper.h">
       <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\IEventManager.h">
+      <Filter>Eventhandling</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Log.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\MGUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StdAfx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StringTools.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\TArray.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\FileSystem.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\HashedString.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11DeptStencilViewConfig.h">
+      <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11DeptStencilView.h">
+      <Filter>Rendering\Resources\Resource Views</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Utility\TArray.inl">
-      <Filter>Utility</Filter>
+      <Filter>Utils</Filter>
     </None>
   </ItemGroup>
 </Project>

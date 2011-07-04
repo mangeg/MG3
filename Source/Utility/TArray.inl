@@ -7,7 +7,7 @@ TArray<T>::TArray()
 	m_iCapacity = 5;
 	m_iSize = 0;
 	
-	m_aData = new T[m_iCapacity];
+	m_aData = MG_NEW T[m_iCapacity];
 }
 //------------------------------------------------------------------------|
 template <class T>
@@ -31,7 +31,7 @@ TArray<T>& TArray<T>::operator=(const TArray& c)
 
 	delete [] m_aData;
 
-	m_aData = new T[m_iCapacity];
+	m_aData = MG_NEW T[m_iCapacity];
 
 	for (int i = 0; i < m_iCapacity; i++)
 	{
@@ -109,7 +109,7 @@ void TArray<T>::Resize( int size ) const
 {
 	int elements = min( size, m_iQuantity );
 
-	T* newArray = new T[size];
+	T* newArray = MG_NEW T[size];
 	for ( int i = 0; i < elements; i++ )
 		newArray[i] = m_aData[i];
 
@@ -148,7 +148,7 @@ void TArray<T>::_IncreaseSize()
 {
 	m_iCapacity = m_iCapacity * 2 + 1;
 
-	T* newArray = new T[m_iCapacity];
+	T* newArray = MG_NEW T[m_iCapacity];
 	for(int i = 0; i < m_iSize; i++)
 		newArray[i] = m_aData[i];
 

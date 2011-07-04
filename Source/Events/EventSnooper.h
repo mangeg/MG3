@@ -1,19 +1,20 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include "IEventHandler.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	class EventSnooper : public IEventHandler
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
+		EventSnooper();
+		virtual ~EventSnooper();
 
-		virtual const EventType& GetEventType() const;
+		std::wstring GetName() { return std::wstring(L"Snooper"); }
+		bool HandleEvent(IEventData const& pEvent);
 
-		static const EventType m_sEventType;
-	};	
+	protected:
+		
+	};
 }

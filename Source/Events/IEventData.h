@@ -10,8 +10,8 @@ namespace MG3
 	class IEventData
 	{
 	public:
-		virtual const EventType& GetEventType(void) const = 0;
-		virtual float GetTimeStamp() const = 0;
+		virtual const EventType& GetEventType() const = 0;
+		virtual const float GetTimeStamp() const = 0;
 		virtual void Serialize(std::ostream &out) const = 0;
 	};
 }

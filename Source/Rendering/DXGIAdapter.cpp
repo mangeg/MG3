@@ -13,7 +13,7 @@ DXGIAdapter::DXGIAdapter(IDXGIAdapter1* pAdapter)
 	IDXGIOutput* pOutput = 0;
 	while ( pAdapter->EnumOutputs( m_vOutputs.Size(), &pOutput ) != DXGI_ERROR_NOT_FOUND )
 	{
-		m_vOutputs.Add( new DXGIOutput( pOutput ) );
+		m_vOutputs.Add( MG_NEW DXGIOutput( pOutput ) );
 	}
 }
 //------------------------------------------------------------------------|

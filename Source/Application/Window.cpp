@@ -5,7 +5,7 @@ using namespace MG3;
 //------------------------------------------------------------------------|
 Window::Window()
 {
-	m_hWnd = 0;
+	m_hWnd = NULL;
 	m_dStyle = (WS_OVERLAPPEDWINDOW | WS_VISIBLE) & ~WS_THICKFRAME;
 	m_sTitle = L"";
 	m_iWidth = 800;
@@ -39,7 +39,7 @@ void Window::SetTitle(std::wstring& title)
 {
 	m_sTitle = title;
 
-	if(m_hWnd != 0)
+	if(m_hWnd != NULL)
 		SetWindowText(m_hWnd, m_sTitle.c_str());
 }
 //------------------------------------------------------------------------|

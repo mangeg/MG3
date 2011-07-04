@@ -1,21 +1,22 @@
+//------------------------------------------------------------------------|
 #include "StdAfx.h"
 #include "W32Window.h"
-
+//------------------------------------------------------------------------|
 using namespace MG3;
-
-const wchar_t* WindowClassName = L"MG3WindowClass";
+//------------------------------------------------------------------------|
+const TCHAR* WindowClassName = _T("MG3WindowClass");
 extern LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
+//------------------------------------------------------------------------|
 W32Window::W32Window()
 {
 	m_hWnd = 0;
 }
-
+//------------------------------------------------------------------------|
 W32Window::~W32Window()
 {
 	Exit();
 }
-
+//------------------------------------------------------------------------|
 void W32Window::Initialize()
 {
 	WNDCLASSEX wc;
@@ -29,7 +30,6 @@ void W32Window::Initialize()
 	wc.hbrBackground	= (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszClassName	= WindowClassName;
 	wc.hIconSm			= LoadIcon(NULL, IDI_APPLICATION);
-
 	RegisterClassEx(&wc);
 
 	m_dStyle = (WS_OVERLAPPEDWINDOW | WS_VISIBLE) & ~WS_THICKFRAME;
@@ -52,15 +52,15 @@ void W32Window::Initialize()
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(m_hWnd);
 }
-
+//------------------------------------------------------------------------|
 void W32Window::Exit()
 {
 	if(m_hWnd)
 		DestroyWindow(m_hWnd);
 
-	m_hWnd = 0;
+	m_hWnd = NULL;
 }
-
+//------------------------------------------------------------------------|
 void W32Window::Paint()
 {
 }

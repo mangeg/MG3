@@ -26,7 +26,7 @@ HWND ScriptConsole::ShowConsole()
 
 	if(!gScriptConsole)
 	{
-		gScriptConsole = new ScriptConsole();
+		gScriptConsole = MG_NEW ScriptConsole();
 	}
 
 	if(!m_hWnd)
@@ -252,7 +252,7 @@ void ScriptConsole::Write(const char *pString)
 {
 	if(gScriptConsole && m_hWnd)
 	{
-		char *buf = new char[strlen(pString)+1];
+		char *buf = MG_NEW char[strlen(pString)+1];
 		int index = 0;
 		for (int i = 0; i < (int)strlen(pString); i++)
 		{

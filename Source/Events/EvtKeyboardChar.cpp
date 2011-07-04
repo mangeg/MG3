@@ -4,6 +4,8 @@
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
+const EventType EvtKeyboardChar::m_sEventType(L"Keyboard_Char");
+//------------------------------------------------------------------------|
 EvtKeyboardChar::EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam)
 	: EvtKeyboardMsg(hWnd, wParam, lParam)
 {
@@ -13,12 +15,7 @@ EvtKeyboardChar::~EvtKeyboardChar()
 {
 }
 //------------------------------------------------------------------------|
-std::wstring EvtKeyboardChar::GetName()
+EventType const& EvtKeyboardChar::GetEventType() const
 {
-	return std::wstring(L"EvtKeyboard::Char");
-}
-//------------------------------------------------------------------------|
-eEVENT EvtKeyboardChar::GetEventType()
-{
-	return KEYBOARD_CHAR;
+	return EvtKeyboardChar::m_sEventType;
 }

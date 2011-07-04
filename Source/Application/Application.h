@@ -4,9 +4,7 @@
 //------------------------------------------------------------------------|
 #include "StdAfx.h"
 #include "IEventHandler.h"
-#include "IEvent.h"
-#include "EventManager.h"
-
+#include "Timer.h"
 //------------------------------------------------------------------------|
 namespace MG3
 {
@@ -27,13 +25,13 @@ namespace MG3
 		void DoExit();
 		HINSTANCE GetInstance(){return m_hInstance;}
 
-		void SetInstance(HINSTANCE hInstance) {m_hInstance = hInstance;}
-
-		EventManager* m_pEventManager;
+		void SetInstance(HINSTANCE hInstance) {m_hInstance = hInstance;}		
 
 	protected:
 		static Application* ms_pAppliction;
 
 		HINSTANCE m_hInstance;
+
+		Timer*	m_pTimer;
 	};
 }

@@ -1,19 +1,20 @@
 //------------------------------------------------------------------------|
 #pragma once
 //------------------------------------------------------------------------|
-#include "StdAfx.h"
-#include "EvtKeyboardMsg.h"
+#include <string>
 //------------------------------------------------------------------------|
 namespace MG3
 {
-	class EvtKeyboardChar : public EvtKeyboardMsg
+	class MGUtils
 	{
 	public:
-		EvtKeyboardChar(HWND hWnd, UINT wParam, UINT lParam);
-		~EvtKeyboardChar();
+		MGUtils();
+		virtual ~MGUtils();
 
-		virtual const EventType& GetEventType() const;
+		static std::wstring GetTimeStamp();
+		static void StringSplit(std::wstring& str, std::wstring& delim, std::vector<std::wstring>& result);
 
-		static const EventType m_sEventType;
-	};	
+	protected:
+		
+	};
 }

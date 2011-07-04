@@ -1,9 +1,7 @@
 //------------------------------------------------------------------------|
 #pragma once
-
 //------------------------------------------------------------------------|
 #include "IEvent.h"
-
 //------------------------------------------------------------------------|
 namespace MG3
 {
@@ -14,6 +12,9 @@ namespace MG3
 		virtual ~IEventHandler() {};
 
 		virtual std::wstring GetName() = 0;
-		virtual bool HandleEvent(IEvent* pEvent) = 0;
+		virtual bool HandleEvent(IEventData const& event) = 0
+		{
+			return true;
+		}
 	};
 }
