@@ -103,7 +103,7 @@ bool TArray<T>::InRange(int index) const
 {
 	return (index >= 0 && index < m_iSize);
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 template <class T>
 void TArray<T>::Resize( int size ) const
 {

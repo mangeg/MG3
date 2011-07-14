@@ -19,8 +19,17 @@ namespace MG3
 	class MX11SwapChainConfig;
 	class MX11Texture2DConfig;
 
+	class MX11RasterizerStateConfig;
+
+	// Views
 	class MX11RenderTargetView;
 	class MX11DeptStencilView;
+	
+	class MX11Shader;
+
+	// States
+	class MX11RasterizerState;
+	class MX11InputLayout;
 
 	class MX11PipelineManager;
 
@@ -38,6 +47,15 @@ namespace MG3
 		RT_TEXTURE2D = 0x080000,
 		RT_TEXTURE3D = 0x090000
 	};	
+	enum ShaderType
+	{
+		SHADER_VERTEX = 0,
+		SHADER_HULL = 1,
+		SHADER_DOMAIN = 2,
+		SHADER_GEOMETRY = 3,
+		SHADER_PIXEL = 4,
+		SHADER_COMPUTE = 5,
+	};
 
 	class MX11Renderer
 	{
@@ -57,26 +75,41 @@ namespace MG3
 		int		CreateSwapchain(MX11SwapChainConfig* pConfig);
 		int		CreateViewPort(D3D11_VIEWPORT viewport);
 
+		int LoadShader(ShaderType type, std::wstring const& file, std::wstring const& entry, std::wstring const& profile);
+
+		int CreateInputLayout(TArray<D3D11_INPUT_ELEMENT_DESC>& elements, int ShaderID);
+
 		ResourcePtr GetSwapChainResource(int ID);
 		ResourcePtr CreateTexture2D(MX11Texture2DConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData);
 
 		MX11RenderTargetView*	GetRenderTargetView(int ID);
 		MX11DeptStencilView*	GetDeptStencilView(int ID);
-		MX11ViewPort* GetViewPort(int ID);
+		MX11ViewPort*			GetViewPort(int ID);
+		MX11Shader*				GetShader(int ID);
+
+		int CreateRasterizerState(MX11RasterizerStateConfig* pConfig);
+
+		boost::shared_ptr<MX11RasterizerState> GetRasterizerState(int ID);
+		boost::shared_ptr<MX11InputLayout> GetInputLayout(int ID);
 
 	public:
 		MX11PipelineManager*	m_pPipeline;
-
-	protected:
 		ID3D11Device*	m_pDevice;
+	protected:
+		
 		ID3D11Debug*	m_pDebugger;
 
 		TArray<MX11SwapChain*> m_vSwapChains;
 
 		TArray<IMX11Resource*> m_vResources;
-
+		//------------------------------------------------------------------------|
 		TArray<MX11RenderTargetView*>	m_vRenderTargetViews;
 		TArray<MX11DeptStencilView*>	m_vDeptStencilViews;
+		//------------------------------------------------------------------------|
+		TArray<MX11Shader*>				m_vShaders;
+		//------------------------------------------------------------------------|
+		TArray<boost::shared_ptr<MX11RasterizerState>>	m_vRasterizerStates;
+		TArray<boost::shared_ptr<MX11InputLayout>>		m_vInputLayouts;
 
 		TArray<MX11ViewPort*>	m_vViewPorts;
 		

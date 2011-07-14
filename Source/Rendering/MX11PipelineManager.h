@@ -22,7 +22,16 @@ namespace MG3
 		void BindDeptTarget(ResourcePtr pDT);
 		void ApplyRenderTargets();
 
+		void BindShader(ShaderType type, int ID);
+		void UnbindShader(ShaderType type);
+		void UnbindShader(int ID);
+
 		void SetViewPort(int ID);
+
+		void SetRasterizerState(int ID);
+		void SetInputLayout(int ID);
+
+		ID3D11DeviceContext* GetContext() {return m_pContext;}
 
 	private:
 		ID3D11DeviceContext*	m_pContext;

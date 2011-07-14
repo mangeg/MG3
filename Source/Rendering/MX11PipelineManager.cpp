@@ -4,6 +4,12 @@
 #include "MX11RenderTargetView.h"
 #include "MX11DeptStencilView.h"
 #include "MX11ViewPort.h"
+#include "MX11Shader.h"
+#include "MX11VertexShader.h"
+#include "MX11PixelShader.h"
+
+#include "MX11RasterizerState.h"
+#include "MX11InputLayout.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
@@ -81,11 +87,97 @@ void MX11PipelineManager::ApplyRenderTargets( )
 	m_OutputMergerStage.BindResource(m_pContext);
 }
 //------------------------------------------------------------------------|
+void MX11PipelineManager::BindShader(ShaderType type, int ID)
+{
+	MX11Renderer* pRenderer = MX11Renderer::Get();
+	MX11Shader* pShader = pRenderer->GetShader(ID);
+
+	if(pShader)
+	{
+		if(pShader->GetType() == type)
+		{
+			switch(type)
+			{
+			case SHADER_VERTEX:
+				{
+					ID3D11VertexShader* pVertexShader = reinterpret_cast<MX11VertexShader*>(pShader)->m_pVertexShader;
+					m_pContext->VSSetShader(pVertexShader, NULL, 0);
+					break;
+				}
+			case SHADER_PIXEL:
+				{
+					ID3D11PixelShader* pPixelShader = reinterpret_cast<MX11PixelShader*>(pShader)->m_pPixelShader;
+					m_pContext->PSSetShader(pPixelShader, NULL, 0);
+					break;
+				}
+			}
+			
+		}
+		else
+		{
+			Log::Get() << L"Shader ID " << ID << L" is not of type " << type << L"." << Flush;
+		}
+	}
+	else
+	{
+		if(ID == -1)
+		{
+			UnbindShader(type);
+		}
+		else
+		{
+			Log::Get() << L"Invalid shader ID: " << ID << Flush; 
+		}
+	}
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::UnbindShader(ShaderType type)
+{
+	switch(type)
+	{
+	case SHADER_VERTEX:
+		m_pContext->VSSetShader(NULL, NULL, 0);
+		break;
+	case SHADER_PIXEL:
+		m_pContext->PSSetShader(NULL, NULL, 0);
+		break;
+	}
+}
+//------------------------------------------------------------------------|
 void MX11PipelineManager::SetViewPort(int ID)
 {
 	MX11ViewPort* pViewPort = MX11Renderer::Get()->GetViewPort(ID);
 	if(pViewPort)
 	{
 		m_pContext->RSSetViewports(1, &pViewPort->m_Desc);
+	}
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::SetRasterizerState(int ID)
+{
+	MX11Renderer* pRenderer = MX11Renderer::Get();
+	
+	ID3D11RasterizerState* pState = pRenderer->GetRasterizerState(ID)->m_pState;
+
+	if(pState)
+	{
+		m_pContext->RSSetState(pState);
+	}
+	else
+		Log::Get() << L"Attempted to set an invalid Rasterizer State ID." << Flush;
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::SetInputLayout(int ID)
+{
+	MX11Renderer* pRenderer = MX11Renderer::Get();
+	ID3D11InputLayout* pLayout = pRenderer->GetInputLayout(ID)->m_pLayout;
+
+	if(pLayout)
+	{
+		m_pContext->IASetInputLayout(pLayout);
+	}
+	else
+	{
+		Log::Get() << L"Trying to set invalid input layout " << ID << L"." << Flush;
 	}
 }

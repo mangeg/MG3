@@ -10,6 +10,8 @@
 
 namespace MG3
 {
+	class MX11RenderEffect;
+
 	class BasicApplication : public Application
 	{
 	public:
@@ -35,5 +37,9 @@ namespace MG3
 		ResourcePtr	m_RenderTarget;
 
 		int			m_iSwapChain;
+
+		ID3D11Buffer*		m_pVB;
+
+		MX11RenderEffect*	m_pEffect;
 	};
 }

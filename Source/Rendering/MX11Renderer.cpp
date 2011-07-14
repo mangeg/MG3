@@ -16,6 +16,16 @@
 
 #include "DXGIAdapter.h"
 #include "MX11PipelineManager.h"
+
+#include "MX11VertexShader.h"
+#include "MX11PixelShader.h"
+
+#include "MX11RasterizerState.h"
+#include "MX11InputLayout.h"
+
+#include "MX11RasterizerStateConfig.h"
+
+#include "StringTools.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------| 
@@ -130,11 +140,10 @@ void MX11Renderer::Shutdown()
 		delete m_vDeptStencilViews[i];
 	for(int i = 0; i < m_vResources.Size(); i++)
 		delete m_vResources[i];
+	for(int i = 0; i < m_vShaders.Size(); i++)
+		delete m_vShaders[i];
 	for(int i = 0; i < m_vSwapChains.Size(); i++)
-	{
-		m_vSwapChains[i]->Get()->SetFullscreenState(FALSE, NULL);
 		delete m_vSwapChains[i];
-	}
 
 	SAFE_RELEASE(m_pDevice);
 	SAFE_RELEASE(m_pDebugger);
@@ -253,6 +262,75 @@ int MX11Renderer::CreateViewPort(D3D11_VIEWPORT viewport)
 	return m_vViewPorts.Size() - 1;
 }
 //------------------------------------------------------------------------|
+int MX11Renderer::LoadShader(ShaderType type, std::wstring const& file, std::wstring const& entry, std::wstring const& profile)
+{
+	HRESULT hr;
+
+	ID3DBlob* pCompiledShader;
+	ID3DBlob* pCompileErrors;
+
+	char AsciiEntry[1024];
+	char AsciiModel[1024];
+	WideCharToMultiByte(CP_ACP, 0, entry.c_str(), -1, AsciiEntry, 1024, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, profile.c_str(), -1, AsciiModel, 1024, NULL, NULL);
+	
+	UINT flags = D3D10_SHADER_PACK_MATRIX_ROW_MAJOR;
+#ifdef _DEBUG
+	flags |= D3D10_SHADER_DEBUG | D3D10_SHADER_SKIP_OPTIMIZATION | D3D10_SHADER_WARNINGS_ARE_ERRORS;
+#endif
+
+	if(FAILED(hr = D3DX11CompileFromFile(
+		file.c_str(), 
+		NULL, 
+		NULL, 
+		AsciiEntry, 
+		AsciiModel, 
+		flags, 
+		0, 
+		NULL, 
+		&pCompiledShader, 
+		&pCompileErrors, 
+		&hr)))
+	{
+		std::wstringstream s;
+		s << L"Error compiling shader: " << file << std::endl;
+		s << L"Errors:" << std::endl;
+		if(pCompileErrors)
+		{
+			const char* pMessage = (const char*)pCompileErrors->GetBufferPointer();
+			s << StringTools::ToUnicode(std::string(pMessage));
+			Log::Get() << s.str() << Flush;
+		}
+
+		return -1;
+	}
+
+	MX11Shader* pShader;
+	switch(type)
+	{
+	case SHADER_VERTEX:
+		{
+			ID3D11VertexShader* pVertexShader = NULL;
+			hr = m_pDevice->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), 0, &pVertexShader);
+			pShader = new MX11VertexShader(pVertexShader);
+			break;
+		}
+	case SHADER_PIXEL:
+		{
+			ID3D11PixelShader* pPixelShader = NULL;
+			hr = m_pDevice->CreatePixelShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), 0, &pPixelShader);
+			pShader = new MX11PixelShader(pPixelShader);
+			break;
+		}
+	}
+
+	pShader->m_pCompiledShader = pCompiledShader;
+
+	m_vShaders.Add(pShader);
+
+	return m_vShaders.Size() - 1;
+}
+//------------------------------------------------------------------------|
 ResourcePtr MX11Renderer::CreateTexture2D(MX11Texture2DConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData)
 {
 	ID3D11Texture2D* pTexture = NULL;
@@ -293,4 +371,62 @@ MX11DeptStencilView* MX11Renderer::GetDeptStencilView(int ID)
 MX11ViewPort* MX11Renderer::GetViewPort(int ID)
 {
 	return m_vViewPorts[ID];
+}
+//------------------------------------------------------------------------|
+MX11Shader* MX11Renderer::GetShader(int ID)
+{
+	return m_vShaders[ID];
+}
+//------------------------------------------------------------------------|
+int MX11Renderer::CreateRasterizerState(MX11RasterizerStateConfig* pConfig)
+{
+	ID3D11RasterizerState* pState = NULL;
+
+	HRESULT hr = m_pDevice->CreateRasterizerState(pConfig, &pState);
+	if(FAILED(hr))
+	{
+		Log::Get() << L"Failed to create rasterizer state." << Flush;
+		return -1;
+	}
+
+	boost::shared_ptr<MX11RasterizerState> ptr(MG_NEW MX11RasterizerState(pState));
+	m_vRasterizerStates.Add(ptr);
+
+	return m_vRasterizerStates.Size() - 1;
+}
+//------------------------------------------------------------------------|
+int MX11Renderer::CreateInputLayout(TArray<D3D11_INPUT_ELEMENT_DESC>& elements, int ShaderID)
+{
+	D3D11_INPUT_ELEMENT_DESC* pElements = MG_NEW D3D11_INPUT_ELEMENT_DESC[elements.Size()];
+	for(int i = 0; i < elements.Size(); i++)
+		pElements[i] = elements[i];
+
+	ID3DBlob* pCompiledShader = m_vShaders[ShaderID]->m_pCompiledShader;
+	ID3D11InputLayout* pLayout = NULL;
+
+	HRESULT hr = m_pDevice->CreateInputLayout(pElements, elements.Size(), 
+		pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), &pLayout);
+
+	SAFE_DELETE_ARRAY(pElements);
+
+	if(FAILED(hr))
+	{
+		Log::Get() << L"Failed to create input layout for shader " << ShaderID << L"." << Flush;
+		return -1;
+	}
+
+	boost::shared_ptr<MX11InputLayout> w(MG_NEW MX11InputLayout(pLayout));
+	m_vInputLayouts.Add(w);
+
+	return m_vInputLayouts.Size() - 1;
+}
+//------------------------------------------------------------------------|
+boost::shared_ptr<MX11RasterizerState> MX11Renderer::GetRasterizerState(int ID)
+{
+	return m_vRasterizerStates[ID];
+}
+//------------------------------------------------------------------------|
+boost::shared_ptr<MX11InputLayout> MX11Renderer::GetInputLayout(int ID)
+{
+	return m_vInputLayouts[ID];
 }

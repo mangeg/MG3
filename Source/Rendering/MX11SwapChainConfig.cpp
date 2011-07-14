@@ -69,47 +69,47 @@ void MX11SwapChainConfig::SetScaling( DXGI_MODE_SCALING Scaling )
 	m_Desc.BufferDesc.Scaling = Scaling;
 }
 
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetBufferDesc( DXGI_MODE_DESC BufferDesc )
 {
 	m_Desc.BufferDesc = BufferDesc;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetSampleDesc( DXGI_SAMPLE_DESC SampleDesc )
 {
 	m_Desc.SampleDesc = SampleDesc;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetBufferUsage( DXGI_USAGE BufferUsage )
 {
 	m_Desc.BufferUsage = BufferUsage;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetBufferCount( UINT BufferCount )
 {
 	m_Desc.BufferCount = BufferCount;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetOutputWindow( HWND OutputWindow )
 {
 	m_Desc.OutputWindow = OutputWindow;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetWindowed( bool Windowed )
 {
 	m_Desc.Windowed = Windowed;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetSwapEffect( DXGI_SWAP_EFFECT SwapEffect )
 {
 	m_Desc.SwapEffect = SwapEffect;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 void MX11SwapChainConfig::SetFlags( UINT Flags )
 {
 	m_Desc.Flags = Flags;
 }
-//--------------------------------------------------------------------------------
+//------------------------------------------------------------------------|
 DXGI_SWAP_CHAIN_DESC MX11SwapChainConfig::GetSwapChainDesc()
 {
 	return m_Desc;

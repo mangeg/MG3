@@ -79,7 +79,7 @@ copy Rendering\*.h ..\SDK\Include\</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_SECURE_SCL=0;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Application;Scripting;Utility;Events;Rendering</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -111,18 +111,27 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClCompile Include="Events\IEventManager.cpp" />
     <ClCompile Include="Rendering\DXGIAdapter.cpp" />
     <ClCompile Include="Rendering\DXGIOutput.cpp" />
+    <ClCompile Include="Rendering\MX11Buffer.cpp" />
+    <ClCompile Include="Rendering\MX11BufferConfig.cpp" />
     <ClCompile Include="Rendering\MX11DeptStencilView.cpp" />
     <ClCompile Include="Rendering\MX11DeptStencilViewConfig.cpp" />
+    <ClCompile Include="Rendering\MX11InputLayout.cpp" />
     <ClCompile Include="Rendering\MX11OutputMergerStage.cpp" />
     <ClCompile Include="Rendering\MX11PipelineManager.cpp" />
+    <ClCompile Include="Rendering\MX11PixelShader.cpp" />
+    <ClCompile Include="Rendering\MX11RasterizerState.cpp" />
+    <ClCompile Include="Rendering\MX11RasterizerStateConfig.cpp" />
+    <ClCompile Include="Rendering\MX11RenderEffect.cpp" />
     <ClCompile Include="Rendering\MX11Renderer.cpp" />
     <ClCompile Include="Rendering\MX11RenderTargetView.cpp" />
     <ClCompile Include="Rendering\MX11ResourceProxy.cpp" />
+    <ClCompile Include="Rendering\MX11Shader.cpp" />
     <ClCompile Include="Rendering\MX11SwapChain.cpp" />
     <ClCompile Include="Rendering\MX11SwapChainConfig.cpp" />
     <ClCompile Include="Rendering\MX11Texture2D.cpp" />
     <ClCompile Include="Rendering\MX11Texture2DConfig.cpp" />
     <ClCompile Include="Rendering\MX11RenderTargetViewConfig.cpp" />
+    <ClCompile Include="Rendering\MX11VertexShader.cpp" />
     <ClCompile Include="Rendering\MX11ViewPort.cpp" />
     <ClCompile Include="Scripting\ScriptConsole.cpp" />
     <ClCompile Include="Utility\FileSystem.cpp" />
@@ -151,10 +160,17 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClInclude Include="Events\IEventManager.h" />
     <ClInclude Include="Rendering\DXGIAdapter.h" />
     <ClInclude Include="Rendering\DXGIOutput.h" />
+    <ClInclude Include="Rendering\MX11Buffer.h" />
+    <ClInclude Include="Rendering\MX11BufferConfig.h" />
     <ClInclude Include="Rendering\MX11DeptStencilView.h" />
     <ClInclude Include="Rendering\MX11DeptStencilViewConfig.h" />
+    <ClInclude Include="Rendering\MX11InputLayout.h" />
     <ClInclude Include="Rendering\MX11OutputMergerStage.h" />
     <ClInclude Include="Rendering\MX11PipelineManager.h" />
+    <ClInclude Include="Rendering\MX11PixelShader.h" />
+    <ClInclude Include="Rendering\MX11RasterizerState.h" />
+    <ClInclude Include="Rendering\MX11RasterizerStateConfig.h" />
+    <ClInclude Include="Rendering\MX11RenderEffect.h" />
     <ClInclude Include="Rendering\MX11Renderer.h" />
     <ClInclude Include="Rendering\IRenderer.h" />
     <ClInclude Include="Rendering\MX11RenderTargetView.h" />
@@ -162,10 +178,12 @@ copy Rendering\*.h ..\SDK\Include\</Command>
     <ClInclude Include="Rendering\IMX11Resource.h" />
     <ClInclude Include="Rendering\MX11ResourceProxy.h" />
     <ClInclude Include="Rendering\MX11ResourceView.h" />
+    <ClInclude Include="Rendering\MX11Shader.h" />
     <ClInclude Include="Rendering\MX11SwapChain.h" />
     <ClInclude Include="Rendering\MX11SwapChainConfig.h" />
     <ClInclude Include="Rendering\MX11Texture2D.h" />
     <ClInclude Include="Rendering\MX11Texture2DConfig.h" />
+    <ClInclude Include="Rendering\MX11VertexShader.h" />
     <ClInclude Include="Rendering\MX11ViewPort.h" />
     <ClInclude Include="Scripting\ScriptConsole.h" />
     <ClInclude Include="Utility\FileSystem.h" />

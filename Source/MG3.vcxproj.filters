@@ -47,6 +47,15 @@
     <Filter Include="Application\Window">
       <UniqueIdentifier>{d7910368-e359-460c-a2b7-10bfe6fe2077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering\States">
+      <UniqueIdentifier>{f3083d91-50b6-41b6-8d2d-50aede34c20d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Material">
+      <UniqueIdentifier>{7bec50c1-2858-462c-a48d-546a2a1e4724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Resources\Buffers">
+      <UniqueIdentifier>{fe2c070b-9586-4d5e-97ae-d2d250aa8278}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -147,6 +156,33 @@
     </ClCompile>
     <ClCompile Include="Application\Window.cpp">
       <Filter>Application\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11VertexShader.cpp">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Shader.cpp">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11PixelShader.cpp">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RasterizerStateConfig.cpp">
+      <Filter>Rendering\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RasterizerState.cpp">
+      <Filter>Rendering\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11InputLayout.cpp">
+      <Filter>Rendering\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RenderEffect.cpp">
+      <Filter>Rendering\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Buffer.cpp">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11BufferConfig.cpp">
+      <Filter>Rendering\Resources\Buffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +302,33 @@
     </ClInclude>
     <ClInclude Include="Rendering\MX11ResourceView.h">
       <Filter>Rendering\Resources\Resource Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Shader.h">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11VertexShader.h">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11PixelShader.h">
+      <Filter>Rendering\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RasterizerStateConfig.h">
+      <Filter>Rendering\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RasterizerState.h">
+      <Filter>Rendering\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11InputLayout.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RenderEffect.h">
+      <Filter>Rendering\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Buffer.h">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11BufferConfig.h">
+      <Filter>Rendering\Resources\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

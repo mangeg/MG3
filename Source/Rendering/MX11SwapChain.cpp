@@ -12,6 +12,7 @@ MX11SwapChain::MX11SwapChain(IDXGISwapChain* pSwapChain, ResourcePtr resource)
 //------------------------------------------------------------------------|
 MX11SwapChain::~MX11SwapChain()
 {
+	m_pSwapChain->SetFullscreenState(FALSE, NULL);
 	SAFE_RELEASE(m_pSwapChain);
 	m_Resource = ResourcePtr();
 }
