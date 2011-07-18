@@ -7,6 +7,9 @@
 #include "TArray.h"
 #include "MX11SwapChainConfig.h"
 #include "MX11PipelineManager.h"
+#include "MX11ParameterManager.h"
+#include "MX11VectorParameter.h"
+#include "MX11BufferConfig.h"
 #include "MX11Texture2DConfig.h"
 #include "MX11RasterizerStateConfig.h"
 
@@ -122,31 +125,22 @@ bool BasicApplication::Initialize()
 	};
 
 	// create the vertex buffer
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
+	D3D11_SUBRESOURCE_DATA BufferData;
+	BufferData.pSysMem = reinterpret_cast<void*>(OurVertices);
+	BufferData.SysMemPitch = 0;
+	BufferData.SysMemSlicePitch = 0;
 
-	bd.Usage = D3D11_USAGE_DYNAMIC;                // write access access by CPU and GPU
-	bd.ByteWidth = sizeof(VERTEX) * 6;             // size is the VERTEX struct * 3
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
-
-	hr = m_pRenderer->m_pDevice->CreateBuffer(&bd, NULL, &m_pVB);       // create the buffer
-	if(FAILED(hr))
-		return false;
-
-	// copy the vertices into the buffer
-	D3D11_MAPPED_SUBRESOURCE ms;
-	hr = m_pRenderer->m_pPipeline->GetContext()->Map(m_pVB, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
-	if(FAILED(hr))
-		return false;
-	memcpy(ms.pData, OurVertices, sizeof(OurVertices));                 // copy the data
-	m_pRenderer->m_pPipeline->GetContext()->Unmap(m_pVB, NULL);                                      // unmap the buffer
+	MX11BufferConfig vbuffer;
+	vbuffer.SetDefaultVertexBuffer(sizeof(VERTEX) * 6, false);
+	VertexBuffer = m_pRenderer->CreateVertexBuffer(&vbuffer, &BufferData);
 
 	MX11RasterizerStateConfig RasterizerStateConfig;
 	RasterizerStateConfig.FillMode = D3D11_FILL_WIREFRAME;
 	int RasterizerStateID = m_pRenderer->CreateRasterizerState(&RasterizerStateConfig);
 
 	//m_pEffect->m_iRasterizerState = RasterizerStateID;	
+
+	m_pVectorParam = m_pRenderer->m_pParamManager->GetVectorParamRef(HashedString(std::wstring(L"TexAndViewportSize").c_str()));
 
 	return true;
 }
@@ -155,19 +149,21 @@ void BasicApplication::Update()
 {
 	m_pTimer->Update();
 
-	//float fBlue = sinf( m_pTimer->GameTime() ) * 0.25f + 0.5f;
+	float fBlue = sinf( static_cast<float>(m_pTimer->GameTime()) ) * 0.25f + 0.5f;
+
+	m_pVectorParam->SetVector(XMFLOAT4(fBlue - 0.5, 0, 0, 1));
 
 	m_pRenderer->m_pPipeline->ClearBuffers(XMFLOAT4(0.0f, 0.2f, 0.25, 1.0f));	
 
-	m_pEffect->ApplyEffect(m_pRenderer->m_pPipeline);
+	m_pEffect->ApplyEffect(m_pRenderer->m_pPipeline, m_pRenderer->m_pParamManager);
 
 	// select which vertex buffer to display
-	UINT stride = sizeof(VERTEX);
-	UINT offset = 0;
-	m_pRenderer->m_pPipeline->GetContext()->IASetVertexBuffers(0, 1, &m_pVB, &stride, &offset);
+	m_pRenderer->m_pPipeline->BindVertexBuffer(VertexBuffer, sizeof(VERTEX), 0);
 
-	// select which primtive type we are using
+	// select which primitive type we are using
 	m_pRenderer->m_pPipeline->GetContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	m_pRenderer->m_pPipeline->ApplyPipelineResource();
 
 	// draw the vertex buffer to the back buffer
 	m_pRenderer->m_pPipeline->GetContext()->Draw(6, 0);
@@ -181,9 +177,9 @@ void BasicApplication::Exit()
 		<< L"Game time: " << m_pTimer->GameTime() << "s" << Flush;
 
 	m_pEventManager->UnregisterAllEvents(this);	
+
 	SAFE_DELETE(m_pEffect);
 	SAFE_DELETE(m_pEventManager);
-	SAFE_RELEASE(m_pVB);
 }
 //------------------------------------------------------------------------|
 void BasicApplication::UnloadComponents()

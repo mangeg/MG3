@@ -2,6 +2,7 @@
 #include "StdAfx.h"
 #include "MX11RenderEffect.h"
 #include "MX11PipelineManager.h"
+#include "IParameterManager.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
@@ -24,7 +25,7 @@ MX11RenderEffect::~MX11RenderEffect()
 {
 }
 //------------------------------------------------------------------------|
-void MX11RenderEffect::ApplyEffect(MX11PipelineManager* pPipeline)
+void MX11RenderEffect::ApplyEffect(MX11PipelineManager* pPipeline, IParamaterManager* pParamManager)
 {
 	if(m_iBlendState)
 	{
@@ -37,6 +38,6 @@ void MX11RenderEffect::ApplyEffect(MX11PipelineManager* pPipeline)
 		pPipeline->SetRasterizerState(m_iRasterizerState);
 	}
 
-	pPipeline->BindShader(SHADER_VERTEX, m_iVertexShader);
-	pPipeline->BindShader(SHADER_PIXEL, m_iPixelShader);
+	pPipeline->BindShader(SHADER_VERTEX, m_iVertexShader, pParamManager);
+	pPipeline->BindShader(SHADER_PIXEL, m_iPixelShader, pParamManager);
 }

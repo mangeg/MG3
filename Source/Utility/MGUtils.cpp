@@ -27,14 +27,14 @@ std::wstring MGUtils::GetTimeStamp()
 void MGUtils::StringSplit(std::wstring& str, std::wstring& delim, std::vector<std::wstring>& result)
 {
 	int start = 0;
-	int end = str.find_first_of(L"\n");
+	int end = str.find_first_of(delim);
 	if(end != -1)
 	{
 		while(end != -1)
 		{
 			result.push_back(str.substr(start, end - start));
 			start = end + 1;
-			end = str.find_first_of(L"\n", start);
+			end = str.find_first_of(delim, start);
 			if(end == -1)
 			{
 				result.push_back(str.substr(start));

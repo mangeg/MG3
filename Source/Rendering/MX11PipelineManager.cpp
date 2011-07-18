@@ -1,5 +1,7 @@
 //------------------------------------------------------------------------|
 #include "StdAfx.h"
+#include "MX11Renderer.h"
+#include "IMX11Resource.h"
 #include "MX11PipelineManager.h"
 #include "MX11RenderTargetView.h"
 #include "MX11DeptStencilView.h"
@@ -10,12 +12,17 @@
 
 #include "MX11RasterizerState.h"
 #include "MX11InputLayout.h"
+
+#include "IParameterManager.h"
+#include "MX11RenderParameter.h"
+#include "MX11ConstantBufferParameter.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
 MX11PipelineManager::MX11PipelineManager()
 	: m_pContext(NULL)
 {
+	ShaderStages[SHADER_VERTEX] = &VertexStage;
 }
 //------------------------------------------------------------------------|
 MX11PipelineManager::~MX11PipelineManager()
@@ -87,13 +94,39 @@ void MX11PipelineManager::ApplyRenderTargets( )
 	m_OutputMergerStage.BindResource(m_pContext);
 }
 //------------------------------------------------------------------------|
-void MX11PipelineManager::BindShader(ShaderType type, int ID)
+void MX11PipelineManager::BindCBufferParameter(ShaderType type,
+	MX11RenderParameter* pParameter, UINT slot, IParamaterManager* pParamManager)
+{
+	MX11Renderer* pRenderer = MX11Renderer::Get();
+
+	if(pParameter->GetParameterType() == CBUFFER)
+	{
+		MX11ConstantBufferParameter* pCBuffer = static_cast<MX11ConstantBufferParameter*>(pParameter);
+		int ID = pCBuffer->GetIndex() & 0xffff;
+
+		IMX11Resource* pResource = pRenderer->GetResource(ID);
+
+		if( pResource || ID == -1)
+		{
+			ID3D11Buffer* pBuffer = NULL;
+
+			if(ID >= 0)
+				pBuffer = static_cast<ID3D11Buffer*>(pResource->GetResource());
+
+			ShaderStages[type]->SetCBuffer(slot, pBuffer);
+		}
+	}
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::BindShader(ShaderType type, int ID, IParamaterManager* pParamManager)
 {
 	MX11Renderer* pRenderer = MX11Renderer::Get();
 	MX11Shader* pShader = pRenderer->GetShader(ID);
 
 	if(pShader)
 	{
+		pShader->UpdateParameters(this, pParamManager);
+
 		if(pShader->GetType() == type)
 		{
 			switch(type)
@@ -112,6 +145,7 @@ void MX11PipelineManager::BindShader(ShaderType type, int ID)
 				}
 			}
 			
+			pShader->BindParameters(this, pParamManager);
 		}
 		else
 		{
@@ -142,6 +176,41 @@ void MX11PipelineManager::UnbindShader(ShaderType type)
 		m_pContext->PSSetShader(NULL, NULL, 0);
 		break;
 	}
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::BindVertexBuffer(ResourcePtr resource, UINT stride, UINT offset)
+{
+	int index = resource->m_iResource;
+
+	int TYPE = index & 0x00FF0000;
+	int ID = index & 0x0000FFFF;
+
+	MX11Renderer* pRenderer = MX11Renderer::Get();
+	ID3D11Buffer* pBuffer = static_cast<ID3D11Buffer*>(pRenderer->GetResource(ID)->GetResource());
+
+	ID3D11Buffer* pBuffers[] = {pBuffer};
+	UINT Strides[] = {stride};
+	UINT Offsets[] = {offset};
+
+	if(pBuffer)
+	{
+		m_pContext->IASetVertexBuffers(0, 1, pBuffers, Strides, Offsets);
+	}
+	else
+	{
+		Log::Get() << L"Tried to bind invalid vertex buffer " << ID << L"." << Flush;
+	}
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::ApplyPipelineResource()
+{
+	/*
+	for(UINT i = 0; i < NUM_SHADER_TYPES; i++)
+	{
+		ShaderStages[i]->BindResources(m_pContext);
+	}
+	*/
+	VertexStage.BindResources(m_pContext);
 }
 //------------------------------------------------------------------------|
 void MX11PipelineManager::SetViewPort(int ID)
@@ -180,4 +249,32 @@ void MX11PipelineManager::SetInputLayout(int ID)
 	{
 		Log::Get() << L"Trying to set invalid input layout " << ID << L"." << Flush;
 	}
+}
+//------------------------------------------------------------------------|
+D3D11_MAPPED_SUBRESOURCE MX11PipelineManager::MapResource(int index, UINT subResource, D3D11_MAP actions, UINT flags)
+{
+	int ID = index & 0X0000FFFF;
+
+	ID3D11Resource* pResource = NULL;
+	D3D11_MAPPED_SUBRESOURCE Data;
+
+	pResource = MX11Renderer::Get()->GetResource(ID)->GetResource();
+
+	HRESULT hr = m_pContext->Map(pResource, subResource, actions, flags, &Data);
+
+	if(FAILED(hr))
+		Log::Get() << L"Failed to map resource." << Flush;
+
+	return Data;
+}
+//------------------------------------------------------------------------|
+void MX11PipelineManager::UnMapResource(int index, UINT subResource)
+{
+	int ID = index & 0X0000FFFF;
+
+	ID3D11Resource* pResource = NULL;
+
+	pResource = MX11Renderer::Get()->GetResource(ID)->GetResource();
+
+	m_pContext->Unmap(pResource, subResource);
 }

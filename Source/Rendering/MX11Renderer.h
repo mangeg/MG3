@@ -12,12 +12,14 @@ namespace MG3
 	class MX11ViewPort;
 
 	// Resources
+	class MX11VertexBuffer;
 	class MX11SwapChain;
 	class MX11Texture2D;
 
 	// Configs
 	class MX11SwapChainConfig;
 	class MX11Texture2DConfig;
+	class MX11BufferConfig;	
 
 	class MX11RasterizerStateConfig;
 
@@ -32,6 +34,7 @@ namespace MG3
 	class MX11InputLayout;
 
 	class MX11PipelineManager;
+	class MX11ParameterManager;
 
 	class IMX11Resource;
 
@@ -47,6 +50,7 @@ namespace MG3
 		RT_TEXTURE2D = 0x080000,
 		RT_TEXTURE3D = 0x090000
 	};	
+
 	enum ShaderType
 	{
 		SHADER_VERTEX = 0,
@@ -55,13 +59,14 @@ namespace MG3
 		SHADER_GEOMETRY = 3,
 		SHADER_PIXEL = 4,
 		SHADER_COMPUTE = 5,
+		NUM_SHADER_TYPES,
 	};
 
 	class MX11Renderer
 	{
 	public:
 		MX11Renderer();
-		~MX11Renderer();
+		virtual ~MX11Renderer();
 
 		static MX11Renderer*	Get();
 
@@ -79,6 +84,9 @@ namespace MG3
 
 		int CreateInputLayout(TArray<D3D11_INPUT_ELEMENT_DESC>& elements, int ShaderID);
 
+		ResourcePtr CreateVertexBuffer(MX11BufferConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData);
+		ResourcePtr CreateConstantBuffer(MX11BufferConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData, bool bAutoUpdate = true);
+
 		ResourcePtr GetSwapChainResource(int ID);
 		ResourcePtr CreateTexture2D(MX11Texture2DConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData);
 
@@ -86,6 +94,7 @@ namespace MG3
 		MX11DeptStencilView*	GetDeptStencilView(int ID);
 		MX11ViewPort*			GetViewPort(int ID);
 		MX11Shader*				GetShader(int ID);
+		IMX11Resource*			GetResource(int ID);
 
 		int CreateRasterizerState(MX11RasterizerStateConfig* pConfig);
 
@@ -94,6 +103,7 @@ namespace MG3
 
 	public:
 		MX11PipelineManager*	m_pPipeline;
+		MX11ParameterManager*	m_pParamManager;
 		ID3D11Device*	m_pDevice;
 	protected:
 		

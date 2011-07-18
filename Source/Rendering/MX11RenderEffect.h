@@ -3,6 +3,7 @@
 //------------------------------------------------------------------------|
 namespace MG3
 {
+	class IParamaterManager;
 	class MX11PipelineManager;
 
 	class MX11RenderEffect
@@ -11,7 +12,7 @@ namespace MG3
 		MX11RenderEffect();
 		virtual ~MX11RenderEffect();
 
-		void ApplyEffect(MX11PipelineManager* pPipeline);
+		void ApplyEffect(MX11PipelineManager* pPipeline, IParamaterManager* pParamManager);
 
 	public:
 		int	m_iVertexShader;

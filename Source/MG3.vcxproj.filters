@@ -56,6 +56,18 @@
     <Filter Include="Rendering\Resources\Buffers">
       <UniqueIdentifier>{fe2c070b-9586-4d5e-97ae-d2d250aa8278}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering\Paramter System">
+      <UniqueIdentifier>{951b03d4-f8bc-440c-8c89-0a51a3d6e153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Paramter System\Parameters">
+      <UniqueIdentifier>{1c815f68-de14-4aef-bf1b-50cc9279d72a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Pipeline\Shaders">
+      <UniqueIdentifier>{83340f6d-bd93-4ffe-87f3-a495438f8181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Pipeline\Shader States">
+      <UniqueIdentifier>{5711c809-fe20-45fc-9356-cd69f3fc7489}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\main.cpp">
@@ -157,15 +169,6 @@
     <ClCompile Include="Application\Window.cpp">
       <Filter>Application\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\MX11VertexShader.cpp">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Rendering\MX11Shader.cpp">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Rendering\MX11PixelShader.cpp">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\MX11RasterizerStateConfig.cpp">
       <Filter>Rendering\States</Filter>
     </ClCompile>
@@ -183,6 +186,42 @@
     </ClCompile>
     <ClCompile Include="Rendering\MX11BufferConfig.cpp">
       <Filter>Rendering\Resources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11VertexBuffer.cpp">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11IndexBuffer.cpp">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11RenderParameter.cpp">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ParameterManager.cpp">
+      <Filter>Rendering\Paramter System</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11VectorParameter.cpp">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ConstantBuffer.cpp">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ConstantBufferParameter.cpp">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11VertexShader.cpp">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11PixelShader.cpp">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11Shader.cpp">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11ShaderStage.cpp">
+      <Filter>Rendering\Pipeline\Shader States</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\MX11VertexStage.cpp">
+      <Filter>Rendering\Pipeline\Shader States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -303,15 +342,6 @@
     <ClInclude Include="Rendering\MX11ResourceView.h">
       <Filter>Rendering\Resources\Resource Views</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\MX11Shader.h">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\MX11VertexShader.h">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Rendering\MX11PixelShader.h">
-      <Filter>Rendering\Pipeline</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\MX11RasterizerStateConfig.h">
       <Filter>Rendering\States</Filter>
     </ClInclude>
@@ -329,6 +359,45 @@
     </ClInclude>
     <ClInclude Include="Rendering\MX11BufferConfig.h">
       <Filter>Rendering\Resources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11VertexBuffer.h">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11IndexBuffer.h">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11RenderParameter.h">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\IParameterManager.h">
+      <Filter>Rendering\Paramter System</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ParameterManager.h">
+      <Filter>Rendering\Paramter System</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11VectorParameter.h">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ConstantBuffer.h">
+      <Filter>Rendering\Resources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ConstantBufferParameter.h">
+      <Filter>Rendering\Paramter System\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11VertexShader.h">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11PixelShader.h">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11Shader.h">
+      <Filter>Rendering\Pipeline\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11ShaderStage.h">
+      <Filter>Rendering\Pipeline\Shader States</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\MX11VertexStage.h">
+      <Filter>Rendering\Pipeline\Shader States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

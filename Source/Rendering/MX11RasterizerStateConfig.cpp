@@ -19,8 +19,7 @@ void MX11RasterizerStateConfig::SetDefaults()
 	CullMode = D3D11_CULL_BACK;
 	FrontCounterClockwise = FALSE;
 	DepthBias = 0;
-	SlopeScaledDepthBias = 0;
-	DepthBias = 0.0f;
+	SlopeScaledDepthBias = 0.0f;
 	DepthBiasClamp = 0.0f;
 	DepthClipEnable = TRUE;
 	ScissorEnable = FALSE;

@@ -11,6 +11,7 @@
 namespace MG3
 {
 	class MX11RenderEffect;
+	class MX11VectorParameter;
 
 	class BasicApplication : public Application
 	{
@@ -38,7 +39,9 @@ namespace MG3
 
 		int			m_iSwapChain;
 
-		ID3D11Buffer*		m_pVB;
+		ResourcePtr VertexBuffer;
+
+		MX11VectorParameter*	m_pVectorParam;
 
 		MX11RenderEffect*	m_pEffect;
 	};

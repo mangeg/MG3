@@ -1,3 +1,8 @@
+cbuffer VSConstants
+{
+	float4 TexAndViewportSize;
+}
+
 struct VOut
 {
     float4 position : SV_POSITION;
@@ -7,6 +12,8 @@ struct VOut
 VOut VShader(float4 position : POSITION, float4 color : COLOR)
 {
     VOut output;
+	
+	position.x += TexAndViewportSize.x;
 	
     output.position = position;
     output.color = color;

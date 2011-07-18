@@ -5,6 +5,7 @@
 #include "MX11Texture2DConfig.h"
 #include "MX11RenderTargetViewConfig.h"
 #include "MX11DeptStencilViewConfig.h"
+#include "MX11BufferConfig.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------|
@@ -12,8 +13,23 @@ MX11ResourceProxy::MX11ResourceProxy()
 {
 	m_iResource = m_iRTVResource = -1;
 
+	m_pBufferConfig = NULL;
 	m_pTexture2DConfig = NULL;
 	m_pRTVConfig = NULL;
+}
+//------------------------------------------------------------------------|
+MX11ResourceProxy::MX11ResourceProxy(int ResourceID, MX11BufferConfig* pConfig, MX11Renderer* pRenderer,
+	MX11RenderTargetViewConfig* pRTVConfig,
+	MX11DeptStencilViewConfig* pDSVConfig)
+{
+	D3D11_BUFFER_DESC desc = pConfig->GetBufferDesc();
+	_Initialize(desc.BindFlags, ResourceID, pRenderer,
+		pRTVConfig,
+		pDSVConfig);
+
+	m_pBufferConfig = NULL;
+	m_pBufferConfig = MG_NEW MX11BufferConfig();
+	*m_pBufferConfig = *pConfig;
 }
 //------------------------------------------------------------------------|
 MX11ResourceProxy::MX11ResourceProxy(int ResourceID, MX11Texture2DConfig* pConfig, MX11Renderer* pRenderer,
@@ -32,6 +48,7 @@ MX11ResourceProxy::MX11ResourceProxy(int ResourceID, MX11Texture2DConfig* pConfi
 //------------------------------------------------------------------------|
 MX11ResourceProxy::~MX11ResourceProxy()
 {
+	SAFE_DELETE(m_pBufferConfig);
 	SAFE_DELETE(m_pTexture2DConfig);
 	SAFE_DELETE(m_pRTVConfig);
 }
@@ -42,6 +59,8 @@ void MX11ResourceProxy::_Initialize(UINT BindFlags, int ResourceID, MX11Renderer
 {
 	m_iResource = ResourceID;
 
+	m_pBufferConfig = NULL;
+	m_pTexture2DConfig = NULL;
 	m_pRTVConfig = NULL;
 	m_pDSVConfig = NULL;
 

@@ -9,13 +9,17 @@
 
 #include "MX11SwapChainConfig.h"
 #include "MX11Texture2DConfig.h"
+#include "MX11BufferConfig.h"
 
 #include "MX11ResourceProxy.h"
 #include "MX11SwapChain.h"
 #include "MX11Texture2D.h"
+#include "MX11VertexBuffer.h"
+#include "MX11ConstantBuffer.h"
 
 #include "DXGIAdapter.h"
 #include "MX11PipelineManager.h"
+#include "MX11ParameterManager.h"
 
 #include "MX11VertexShader.h"
 #include "MX11PixelShader.h"
@@ -26,6 +30,7 @@
 #include "MX11RasterizerStateConfig.h"
 
 #include "StringTools.h"
+#include "HashedString.h"
 //------------------------------------------------------------------------|
 using namespace MG3;
 //------------------------------------------------------------------------| 
@@ -104,6 +109,7 @@ bool MX11Renderer::Initialize()
 		return false;
 	}
 
+	m_pParamManager = MG_NEW MX11ParameterManager();
 	m_pPipeline = MG_NEW MX11PipelineManager();
 	m_pPipeline->SetDeviceContext(pContext);
 
@@ -131,6 +137,7 @@ bool MX11Renderer::Initialize()
 void MX11Renderer::Shutdown()
 {
 	SAFE_DELETE(m_pPipeline);	
+	SAFE_DELETE(m_pParamManager);
 
 	for(int i = 0; i < m_vViewPorts.Size(); i++)
 		delete m_vViewPorts[i];
@@ -312,21 +319,100 @@ int MX11Renderer::LoadShader(ShaderType type, std::wstring const& file, std::wst
 		{
 			ID3D11VertexShader* pVertexShader = NULL;
 			hr = m_pDevice->CreateVertexShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), 0, &pVertexShader);
-			pShader = new MX11VertexShader(pVertexShader);
+			pShader = MG_NEW MX11VertexShader(pVertexShader);
 			break;
 		}
 	case SHADER_PIXEL:
 		{
 			ID3D11PixelShader* pPixelShader = NULL;
 			hr = m_pDevice->CreatePixelShader(pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(), 0, &pPixelShader);
-			pShader = new MX11PixelShader(pPixelShader);
+			pShader = MG_NEW MX11PixelShader(pPixelShader);
 			break;
 		}
 	}
 
-	pShader->m_pCompiledShader = pCompiledShader;
+	pShader->FileName = file;
+	pShader->CompiledShader = pCompiledShader;
 
 	m_vShaders.Add(pShader);
+
+	ID3D11ShaderReflection* pReflection = NULL;
+	hr = D3DReflect( pCompiledShader->GetBufferPointer(), pCompiledShader->GetBufferSize(),
+		IID_ID3D11ShaderReflection, reinterpret_cast<void**>(&pReflection));
+
+	D3D11_SHADER_DESC desc;
+	pReflection->GetDesc(&desc);
+	pShader->Desc = desc;
+
+	for(UINT i = 0; i < desc.InputParameters; i++)
+	{
+		D3D11_SIGNATURE_PARAMETER_DESC input_desc;
+		pReflection->GetInputParameterDesc(i, &input_desc);
+		pShader->InputSignatureParameters.Add(SignatureParameterDesc(input_desc));
+	}
+	for(UINT i = 0; i < desc.OutputParameters; i++)
+	{
+		D3D11_SIGNATURE_PARAMETER_DESC output_desc;
+		pReflection->GetOutputParameterDesc(i, &output_desc);
+		pShader->OutputSignatureParameters.Add(SignatureParameterDesc(output_desc));
+	}
+	for(UINT i = 0; i < desc.ConstantBuffers; i++)
+	{
+		ID3D11ShaderReflectionConstantBuffer* pConstBuffer = pReflection->GetConstantBufferByIndex(i);
+		
+		D3D11_SHADER_BUFFER_DESC desc;
+		pConstBuffer->GetDesc(&desc);
+
+		if ( desc.Type == D3D_CT_CBUFFER || desc.Type == D3D_CT_TBUFFER )
+		{
+			ConstantBufferLayout BufferLayout;
+			BufferLayout.Description = desc;
+			BufferLayout.pParamRef = (MX11RenderParameter*)m_pParamManager->GetCBufferParamRef(HashedString(BufferLayout.Description.Name.c_str()));
+
+			for ( UINT j = 0; j < desc.Variables; j++ )
+			{
+				ID3D11ShaderReflectionVariable* pVariable = pConstBuffer->GetVariableByIndex( j );
+				D3D11_SHADER_VARIABLE_DESC var_desc;
+				pVariable->GetDesc( &var_desc );
+				ShaderVariableDesc variabledesc(var_desc);
+
+				BufferLayout.Variables.Add(variabledesc);
+
+				ID3D11ShaderReflectionType* pType = pVariable->GetType();
+				D3D11_SHADER_TYPE_DESC type_desc;
+				pType->GetDesc( &type_desc );
+				ShaderTypeDesc typedesc( type_desc );
+
+				BufferLayout.Types.Add(typedesc);
+
+				MX11RenderParameter* pParam = NULL;
+				if ( typedesc.Class == D3D10_SVC_VECTOR )
+				{
+					pParam = (MX11RenderParameter*)m_pParamManager->GetVectorParamRef( HashedString(variabledesc.Name.c_str()));
+				}
+
+				BufferLayout.Parameters.Add(pParam);				
+			}
+
+			pShader->ConstantBuffers.Add(BufferLayout);
+		}		
+	}
+
+	for(UINT i = 0; i < desc.BoundResources; i++)
+	{
+		D3D11_SHADER_INPUT_BIND_DESC res_desc;
+		pReflection->GetResourceBindingDesc(i, &res_desc);
+		ShaderInputBindDesc bindingdesc(res_desc);
+
+		if(res_desc.Type == D3D10_SIT_CBUFFER || res_desc.Type == D3D10_SIT_TBUFFER)
+		{
+			bindingdesc.pParamRef = (MX11RenderParameter*)m_pParamManager->GetCBufferParamRef(HashedString(bindingdesc.Name.c_str()));
+		}
+
+		pShader->ResourceBindings.Add(bindingdesc);
+	}
+
+	pReflection->Release();
 
 	return m_vShaders.Size() - 1;
 }
@@ -378,6 +464,11 @@ MX11Shader* MX11Renderer::GetShader(int ID)
 	return m_vShaders[ID];
 }
 //------------------------------------------------------------------------|
+IMX11Resource* MX11Renderer::GetResource(int ID)
+{
+	return m_vResources[ID];
+}
+//------------------------------------------------------------------------|
 int MX11Renderer::CreateRasterizerState(MX11RasterizerStateConfig* pConfig)
 {
 	ID3D11RasterizerState* pState = NULL;
@@ -401,7 +492,7 @@ int MX11Renderer::CreateInputLayout(TArray<D3D11_INPUT_ELEMENT_DESC>& elements, 
 	for(int i = 0; i < elements.Size(); i++)
 		pElements[i] = elements[i];
 
-	ID3DBlob* pCompiledShader = m_vShaders[ShaderID]->m_pCompiledShader;
+	ID3DBlob* pCompiledShader = m_vShaders[ShaderID]->CompiledShader;
 	ID3D11InputLayout* pLayout = NULL;
 
 	HRESULT hr = m_pDevice->CreateInputLayout(pElements, elements.Size(), 
@@ -419,6 +510,47 @@ int MX11Renderer::CreateInputLayout(TArray<D3D11_INPUT_ELEMENT_DESC>& elements, 
 	m_vInputLayouts.Add(w);
 
 	return m_vInputLayouts.Size() - 1;
+}
+//------------------------------------------------------------------------|
+ResourcePtr MX11Renderer::CreateVertexBuffer(MX11BufferConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData)
+{
+	ID3D11Buffer* pBuffer = NULL;
+	HRESULT hr = m_pDevice->CreateBuffer(&pConfig->m_Desc, pData, &pBuffer);
+
+	if(pBuffer)
+	{
+		MX11VertexBuffer* pVertexBuffer = MG_NEW MX11VertexBuffer(pBuffer);
+		pVertexBuffer->SetDesiredDescription(pConfig->m_Desc);
+		m_vResources.Add(pVertexBuffer);
+
+		int ResourceID = (m_vResources.Size() - 1) + RT_VERTEXBUFFER;
+		ResourcePtr Proxy(MG_NEW MX11ResourceProxy(ResourceID, pConfig, this));
+		
+		return Proxy;
+	}
+
+	return ResourcePtr(MG_NEW MX11ResourceProxy());
+}
+//------------------------------------------------------------------------|
+ResourcePtr MX11Renderer::CreateConstantBuffer(MX11BufferConfig* pConfig, D3D11_SUBRESOURCE_DATA* pData, bool bAutoUpdate)
+{
+	ID3D11Buffer* pBuffer = NULL;
+	HRESULT hr = m_pDevice->CreateBuffer(&pConfig->m_Desc, pData, &pBuffer);
+
+	if(SUCCEEDED(hr))
+	{
+		MX11ConstantBuffer* pConstantBuffer = MG_NEW MX11ConstantBuffer(pBuffer);
+		pConstantBuffer->SetDesiredDescription(pConfig->m_Desc);
+		pConstantBuffer->SetAutoUpdate(bAutoUpdate);
+		m_vResources.Add(pConstantBuffer);
+
+		int ResourceID = m_vResources.Size() - 1 + RT_CONSTANTBUFFER;
+		ResourcePtr Proxy(MG_NEW MX11ResourceProxy(ResourceID, pConfig, this));
+
+		return Proxy;
+	}
+
+	return ResourcePtr(MG_NEW MX11ResourceProxy());
 }
 //------------------------------------------------------------------------|
 boost::shared_ptr<MX11RasterizerState> MX11Renderer::GetRasterizerState(int ID)
